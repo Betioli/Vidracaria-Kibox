@@ -1,0 +1,383 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vidraçaria Kibox - Landing Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baskervville:wght@400;700&family=Cinzel:wght@400;700&family=Montserrat:wght@400;500&family=Red+Hat+Display:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
+        header { background: #141941; padding: 20px; }
+        header h1 { color: #FFFFFF; font-family: 'Montserrat', sans-serif; font-size: 20px; margin: 0; text-align: left; }
+        .hero { position: relative; height: 100vh; width: 100%; overflow: hidden; }
+        .hero .slide { height: 100vh; width: 100%; position: absolute; top: 0; left: 0; opacity: 1; transition: transform 0.5s ease-in-out; transform: translateX(0); background-size: cover; background-repeat: no-repeat; background-position: center; }
+        .hero .slide.active { z-index: 1; }
+        .hero .slide.next { transform: translateX(100%); }
+        .hero .slide.prev { transform: translateX(-100%); }
+        .hero .slide-content { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #FFFFFF; opacity: 0; animation: slideUp 1s forwards; }
+        @keyframes slideUp { from { transform: translate(-50%, -40%); opacity: 0; } to { transform: translate(-50%, -50%); opacity: 1; } }
+        .hero .slide-content h2 { font-family: 'Baskervville', serif; font-size: 36px; text-transform: uppercase; margin: 0; }
+        .hero .slide-content p { font-family: 'Red Hat Display', sans-serif; font-size: 25px; margin: 10px 0 0; }
+        .hero .controls { position: absolute; width: 100%; height: 100%; }
+        .hero .arrow { position: absolute; top: 50%; transform: translateY(-50%); color: #000000; font-size: 30px; cursor: pointer; z-index: 2; }
+        .hero .prev { left: 20px; }
+        .hero .next { right: 20px; }
+        .hero .dots { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); }
+        .hero .dot { height: 10px; width: 10px; background: #000000; border-radius: 50%; display: inline-block; margin: 0 5px; cursor: pointer; }
+        .hero .dot.active { background: #FFFFFF; }
+        .text-btn { background: #404040; padding: 40px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .text-btn p { font-family: 'Montserrat', sans-serif; font-size: 15px; color: #FFFFFF; margin: 0; text-align: left; }
+        .text-btn a { font-family: 'Montserrat', sans-serif; background: #00FF19; color: #000000; padding: 10px 20px; text-decoration: none; border-radius: 10px; display: flex; align-items: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); }
+        .text-btn a img { width: 20px; height: 20px; margin-right: 8px; }
+        .services { background: #000000; padding: 40px 20px; text-align: center; }
+        .services h2 { font-family: 'Montserrat', sans-serif; font-size: 15px; color: #FFFFFF; text-transform: uppercase; margin: 0 0 20px; }
+        .services p { font-family: 'Red Hat Display', sans-serif; font-size: 18px; color: #FFFFFF; margin: 0 0 20px; }
+        .services .carousel { display: flex; justify-content: center; gap: 10px; }
+        .services .carousel img { max-width: 300px; height: auto; }
+        .services .controls { margin-top: 10px; }
+        .services .dot { height: 10px; width: 10px; background: #000000; border-radius: 50%; display: inline-block; margin: 0 5px; cursor: pointer; }
+        .services .dot.active { background: #FFFFFF; }
+        .services .arrow { color: #000000; font-size: 30px; cursor: pointer; }
+        .testimonials { background: #000000; padding: 40px 20px; text-align: center; }
+        .testimonials h2 { font-family: 'Montserrat', sans-serif; font-size: 15px; color: #FFFFFF; text-transform: uppercase; margin: 0 0 20px; }
+        .testimonials .carousel { position: relative; overflow: hidden; }
+        .testimonials .review { display: none; }
+        .testimonials .review.active { display: block; }
+        .testimonials .review img { width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; }
+        .testimonials .review p { font-family: 'Montserrat', sans-serif; font-size: 14px; color: #FFFFFF; display: inline-block; vertical-align: top; width: 80%; }
+        .testimonials .google-logo { width: 100px; margin-bottom: 20px; }
+        .testimonials .controls { margin-top: 10px; }
+        .testimonials .dot { height: 10px; width: 10px; background: #000000; border-radius: 50%; display: inline-block; margin: 0 5px; cursor: pointer; }
+        .testimonials .dot.active { background: #FFFFFF; }
+        .testimonials .arrow { color: #000000; font-size: 26px; cursor: pointer; }
+        .divider { height: 1.5px; background: #FC0606; margin: 0 20px; }
+        .footer-grid { background: #141941; padding: 40px 20px; display: grid; grid-template-columns: 20% 25% 27% 25%; gap: 20px; }
+        .footer-grid h3 { font-family: 'Cinzel', serif; font-size: 30px; color: #FFFFFF; }
+        .footer-grid p { font-family: 'Montserrat', sans-serif; font-size: 12px; color: #FFFFFF; }
+        .footer-grid img { max-width: 69%; height: auto; }
+        .footer-bottom { background: #141941; padding: 20px; text-align: center; }
+        .footer-bottom p { font-family: 'Montserrat', sans-serif; font-size: 15px; color: #FFFFFF; margin: 0; }
+        .footer-bottom a { font-family: 'Montserrat', sans-serif; color: #FFFFFF; text-decoration: none; }
+        @media (max-width: 768px) {
+            .hero .slide { height: 50vh; }
+            .text-btn { flex-direction: column; text-align: center; }
+            .text-btn p { margin-bottom: 10px; }
+            .text-btn a { margin: 0 auto; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .services .carousel { flex-direction: column; }
+            .services .carousel img { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Vidraçaria Kibox excelência em vidro</h1>
+    </header>
+    <div class="hero">
+        <div class="slide active" style="background-image: url('https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/Slide%201.jpg?raw=true');">
+            <div class="slide-content">
+                <h2>22 ANOS DE EXPERIENCIA</h2>
+                <p>Compromisso qualidade e preço justo !</p>
+            </div>
+        </div>
+        <div class="slide" style="background-image: url('https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/Slide%202.png?raw=true');">
+            <div class="slide-content">
+                <h2>ESPECIALISTA EM VIDRO TEMPERADO</h2>
+                <p>Portas | Janelas | Vitrôs | Box | Espelhos | Sacada</p>
+            </div>
+        </div>
+        <div class="slide" style="background-image: url('https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/Slide%203.jpg?raw=true');">
+            <div class="slide-content">
+                <h2>ORÇAMENTO E EXECUÇÃO EM TEMPO RECORDE</h2>
+                <p>Gratuito e sem complicação</p>
+            </div>
+        </div>
+        <div class="controls">
+            <span class="arrow prev">&#10094;</span>
+            <span class="arrow next">&#10095;</span>
+            <div class="dots">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+    </div>
+    <div class="text-btn">
+        <p><strong>Atuamos exclusivamente no centro de </strong><strong>Ribeirão Preto - SP</strong><br /><br /> Para suprir o grande número de prédios e lojas comerciais, sabemos da necessidade e da rapidez tanto no orçamento quanto na execução do serviço.</p>
+        <a href="https://api.whatsapp.com/send/?phone=5516996197527&text&type=phone_number&app_absent=0"><img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-whatsapp-50.png?raw=true" alt="WhatsApp"><strong>Peça seu Orçamento</a></strong>
+    </div>
+    <div class="services">
+        <h2>Nossos serviços</h2>
+        <p>Sacada | Guarda Corpo | Box | Espelho | Vidro Temperado | Forro de PVC</p>
+        <div class="carousel">
+            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/2.jpg?raw=true" alt="">
+            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/3.jpg?raw=true" alt="">
+            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/4.jpg?raw=true" alt="">
+            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/5.jpg?raw=true" alt="">
+            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/6.jpg?raw=true" alt="">
+            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/7.jpg?raw=true" alt="">
+            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/8.jpg?raw=true" alt="">
+            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/9.jpg?raw=true" alt="">
+            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/10.jpg?raw=true" alt="">
+            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/11.jpg?raw=true" alt="">
+            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/12.jpg?raw=true" alt="">
+        </div>
+        <div class="controls">
+            <span class="arrow prev">&#10094;</span>
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="arrow next">&#10095;</span>
+        </div>
+    </div>
+    <div class="testimonials">
+        <h2>O que nossos clientes dizem ?</h2>
+        <img src="https://www.google.com/images/branding/googlemicrologo.png" alt="Google Logo" class="google-logo">
+        <div class="carousel">
+            <div class="review active"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23FF5733'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3EJ%3C/text%3E%3C/svg%3E" alt="José Vinicius"><p><strong>José Vinicius</strong> (6 meses atrás)<br>Excelente profissional, Responde rapido cumpriu com o combinado super recomendado a todos</p></div>
+            <div class="review"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23C70039'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3EK%3C/text%3E%3C/svg%3E" alt="Katarine Lima"><p><strong>Katarine Lima</strong><br>Serviço top de linha, faz tempo que nossa família só usa kibox vidros e tá cada vez melhor.</p></div>
+            <div class="review"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23FFBF00'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3EM%3C/text%3E%3C/svg%3E" alt="Mayara Pires"><p><strong>Mayara Pires</strong><br>Profissional atencioso e muito prestativo, fez o serviço de forma rápida, organizada e eficiente, com certeza farei outras solicitações.</p></div>
+            <div class="review"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%239900CC'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3EA%3C/text%3E%3C/svg%3E" alt="Angelica Albino"><p><strong>Angelica Albino</strong><br>Excelente profissional ,qualidade no serviço ,sem enrolação! 10👏👏</p></div>
+            <div class="review"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%2333FF57'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3EJ%3C/text%3E%3C/svg%3E" alt="José Donizeti Cavenaghi"><p><strong>José Donizeti Cavenaghi</strong><br>Pedi a instalação de um vidro para porta, um serviço muito simples. Passaram o orçamento na hora com um preço justo. Fizeram a instalação hoje, um serviço de muito boa qualidade. Se atendem assim em um serviço simples, imagino um mais complexo. Recomendo.</p></div>
+            <div class="review"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23FF33A1'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3EL%3C/text%3E%3C/svg%3E" alt="Luiz Gelatti"><p><strong>Luiz Gelatti</strong><br>Excelente serviço, extrema qualidade e profissionalismo além da qualidade e acabamento</p></div>
+            <div class="review"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%2300FFFF'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3EM%3C/text%3E%3C/svg%3E" alt="Maurício Iwanaga"><p><strong>Maurício Iwanaga</strong><br>Umas das melhores vidraçarias... honesto preço justo.. atencioso... cumpre com o prometido e dentro do prazo... parabens kibox 🙏🏾🙏🏾👊🏾👊🏾</p></div>
+            <div class="review"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23FF5733'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3ER%3C/text%3E%3C/svg%3E" alt="Roseli Rubio"><p><strong>Roseli Rubio</strong><br>Serviço de qualidade e são muito prestativo eu indico</p></div>
+            <div class="review"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23C70039'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3EM%3C/text%3E%3C/svg%3E" alt="Marcos Paulo"><p><strong>Marcos Paulo</strong><br>Francisco atencioso e prestativo, otimo trabalho. Recomendo!</p></div>
+            <div class="review"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23FFBF00'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3ET%3C/text%3E%3C/svg%3E" alt="Tania dos Santos Arruda"><p><strong>Tania dos Santos Arruda</strong><br>Serviço de qualidade , gentil e atencioso, sempre que preciso grito o Kiko pra me socorrer nunca me deixou na mão 😌♥️</p></div>
+            <div class="review"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%239900CC'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3ES%3C/text%3E%3C/svg%3E" alt="Stephanie Gomes"><p><strong>Stephanie Gomes</strong><br>Gostei muito do trabalho dele, caprichoso, rápido, se precisar vou chamar mais vezes</p></div>
+            <div class="review"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%2333FF57'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3EL%3C/text%3E%3C/svg%3E" alt="Leonor Silva"><p><strong>Leonor Silva</strong><br>O que poderia dizer dessa lugar ótimo atendimento achei o box de vidro que procurava além de ter variedades de produtos com preço acessivel</p></div>
+        </div>
+        <div class="controls">
+            <span class="arrow prev">&#10094;</span>
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="arrow next">&#10095;</span>
+        </div>
+    </div>
+    <div class="divider"></div>
+    <div class="footer-grid">
+        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/1.png?raw=true" alt="Ícone">
+        <div><h3>Onde estamos</h3><p>Endereço: Rua Silveira Martins, 1723 - Campos Elísios, Ribeirão Preto - SP CEP: 14080-110</p></div>
+        <div><h3>Horário de funcionamento</h3><p>Segunda a Sexta das 09:00 as 17:00</p></div>
+        <div><h3>Contatos</h3><p><a href="https://www.instagram.com/kiboxvidros/">Kiboxvidros</a></p></div>
+    </div>
+    <div class="footer-bottom">
+        <p>2025© Vidraçaria KIBOX | Todos os direitos reservados</p>
+        <p><a href="http://localhost/bms/wordpress/politica-de-privacidade/">Políticas de Privacidade</a></p>
+        <p><a href="https://www.instagram.com/bms_trafego/">Desenvolvido por @bms_trafego</a></p>
+    </div>
+    <script>
+        let slideIndex = 0;
+        const slides = document.getElementsByClassName("slide");
+        function showSlides() {
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove("active", "next", "prev");
+                dots[i].classList.remove("active");
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1; }
+            slides[slideIndex - 1].classList.add("active");
+            if (slideIndex === 1) slides[slides.length - 1].classList.add("prev");
+            else slides[slideIndex - 2].classList.add("prev");
+            if (slideIndex === slides.length) slides[0].classList.add("next");
+            else slides[slideIndex].classList.add("next");
+            dots[slideIndex - 1].classList.add("active");
+            setTimeout(showSlides, 5000);
+        }
+        const dots = document.getElementsByClassName("dot");
+        for (let i = 0; i < dots.length; i++) {
+            dots[i].addEventListener("click", () => {
+                for (let j = 0; j < slides.length; j++) {
+                    slides[j].classList.remove("active", "next", "prev");
+                    dots[j].classList.remove("active");
+                }
+                slideIndex = i + 1;
+                slides[i].classList.add("active");
+                if (i === 0) slides[slides.length - 1].classList.add("prev");
+                else slides[i - 1].classList.add("prev");
+                if (i === slides.length - 1) slides[0].classList.add("next");
+                else slides[i + 1].classList.add("next");
+                dots[i].classList.add("active");
+            });
+        }
+        document.querySelector(".prev").addEventListener("click", () => {
+            slideIndex--;
+            if (slideIndex < 1) slideIndex = slides.length;
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove("active", "next", "prev");
+                dots[i].classList.remove("active");
+            }
+            slides[slideIndex - 1].classList.add("active");
+            if (slideIndex === 1) slides[slides.length - 1].classList.add("prev");
+            else slides[slideIndex - 2].classList.add("prev");
+            if (slideIndex === slides.length) slides[0].classList.add("next");
+            else slides[slideIndex].classList.add("next");
+            dots[slideIndex - 1].classList.add("active");
+        });
+        document.querySelector(".next").addEventListener("click", () => {
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove("active", "next", "prev");
+                dots[i].classList.remove("active");
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) slideIndex = 1;
+            slides[slideIndex - 1].classList.add("active");
+            if (slideIndex === 1) slides[slides.length - 1].classList.add("prev");
+            else slides[slideIndex - 2].classList.add("prev");
+            if (slideIndex === slides.length) slides[0].classList.add("next");
+            else slides[slideIndex].classList.add("next");
+            dots[slideIndex - 1].classList.add("active");
+        });
+        showSlides();
+
+        let serviceIndex = 0;
+        const serviceSlides = document.querySelectorAll(".services .carousel img");
+        const serviceDots = document.querySelectorAll(".services .dot");
+        function showServices() {
+            for (let i = 0; i < serviceSlides.length; i++) {
+                serviceSlides[i].style.display = "none";
+                serviceDots[i].classList.remove("active");
+            }
+            serviceIndex++;
+            if (serviceIndex > serviceSlides.length) serviceIndex = 1;
+            serviceSlides[serviceIndex - 1].style.display = "block";
+            serviceDots[serviceIndex - 1].classList.add("active");
+        }
+        document.querySelector(".services .prev").addEventListener("click", () => {
+            serviceIndex--;
+            if (serviceIndex < 1) serviceIndex = serviceSlides.length;
+            for (let i = 0; i < serviceSlides.length; i++) {
+                serviceSlides[i].style.display = "none";
+                serviceDots[i].classList.remove("active");
+            }
+            serviceSlides[serviceIndex - 1].style.display = "block";
+            serviceDots[serviceIndex - 1].classList.add("active");
+        });
+        document.querySelector(".services .next").addEventListener("click", () => {
+            for (let i = 0; i < serviceSlides.length; i++) {
+                serviceSlides[i].style.display = "none";
+                serviceDots[i].classList.remove("active");
+            }
+            serviceIndex++;
+            if (serviceIndex > serviceSlides.length) serviceIndex = 1;
+            serviceSlides[serviceIndex - 1].style.display = "block";
+            serviceDots[serviceIndex - 1].classList.add("active");
+        });
+        for (let i = 0; i < serviceDots.length; i++) {
+            serviceDots[i].addEventListener("click", () => {
+                for (let j = 0; j < serviceSlides.length; j++) {
+                    serviceSlides[j].style.display = "none";
+                    serviceDots[j].classList.remove("active");
+                }
+                serviceIndex = i + 1;
+                serviceSlides[i].style.display = "block";
+                serviceDots[i].classList.add("active");
+            });
+        }
+        serviceSlides[0].style.display = "block";
+        serviceDots[0].classList.add("active");
+
+        let testimonialIndex = 0;
+        const testimonialSlides = document.querySelectorAll(".testimonials .review");
+        const testimonialDots = document.querySelectorAll(".testimonials .dot");
+        function showTestimonials() {
+            for (let i = 0; i < testimonialSlides.length; i++) {
+                testimonialSlides[i].classList.remove("active");
+                testimonialDots[i].classList.remove("active");
+            }
+            testimonialIndex++;
+            if (testimonialIndex > testimonialSlides.length) testimonialIndex = 1;
+            testimonialSlides[testimonialIndex - 1].classList.add("active");
+            testimonialDots[testimonialIndex - 1].classList.add("active");
+        }
+        document.querySelector(".testimonials .prev").addEventListener("click", () => {
+            testimonialIndex--;
+            if (testimonialIndex < 1) testimonialIndex = testimonialSlides.length;
+            for (let i = 0; i < testimonialSlides.length; i++) {
+                testimonialSlides[i].classList.remove("active");
+                testimonialDots[i].classList.remove("active");
+            }
+            testimonialSlides[testimonialIndex - 1].classList.add("active");
+            testimonialDots[testimonialIndex - 1].classList.add("active");
+        });
+        document.querySelector(".testimonials .next").addEventListener("click", () => {
+            for (let i = 0; i < testimonialSlides.length; i++) {
+                testimonialSlides[i].classList.remove("active");
+                testimonialDots[i].classList.remove("active");
+            }
+            testimonialIndex++;
+            if (testimonialIndex > testimonialSlides.length) testimonialIndex = 1;
+            testimonialSlides[testimonialIndex - 1].classList.add("active");
+            testimonialDots[testimonialIndex - 1].classList.add("active");
+        });
+        for (let i = 0; i < testimonialDots.length; i++) {
+            testimonialDots[i].addEventListener("click", () => {
+                for (let j = 0; j < testimonialSlides.length; j++) {
+                    testimonialSlides[j].classList.remove("active");
+                    testimonialDots[j].classList.remove("active");
+                }
+                testimonialIndex = i + 1;
+                testimonialSlides[i].classList.add("active");
+                testimonialDots[i].classList.add("active");
+            });
+        }
+        testimonialSlides[0].classList.add("active");
+        testimonialDots[0].classList.add("active");
+    </script>
+</body>
+</html>
