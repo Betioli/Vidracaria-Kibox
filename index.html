@@ -182,11 +182,25 @@
         /* INÍCIO DOS NOVOS ESTILOS PARA DEPOIMENTOS */
         .testimonials { 
             background: #404040; /* Nova cor de fundo */
-            padding: 40px 20px; 
+            padding: 20px 20px; /* Padding vertical diminuído */
             text-align: center; 
         }
-        .testimonials h2 { font-family: 'Montserrat', sans-serif; font-size: 15px; color: #FFFFFF; text-transform: uppercase; margin: 0 0 10px; }
-        .testimonials .google-logo { width: 80px; margin-bottom: 30px; }
+        .testimonials h2 { 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 15px; 
+            color: #FFFFFF; 
+            text-transform: uppercase; 
+            margin: 0 0 30px; 
+            display: flex; /* Adicionado para alinhar o ícone */
+            align-items: center; /* Adicionado para alinhar o ícone */
+            justify-content: center; /* Adicionado para alinhar o ícone */
+            gap: 10px; /* Espaço entre o ícone e o texto */
+        }
+        .google-title-logo { 
+            width: 40px; /* Tamanho reduzido */
+            height: auto;
+        }
+        /* A regra .testimonials .google-logo foi removida/substituída pela de cima */
 
         .testimonials-carousel-container { position: relative; max-width: 900px; margin: 0 auto; overflow: hidden; }
         .testimonials-carousel { display: flex; transition: transform 0.5s ease-in-out; }
@@ -199,6 +213,14 @@
             text-align: left; 
             width: calc(50% - 10px); 
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: relative; /* Necessário para posicionar o logo do Google */
+        }
+        .google-review-logo {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 24px;
+            height: auto;
         }
         .review-header { display: flex; align-items: center; margin-bottom: 10px; }
         .avatar { 
@@ -231,7 +253,14 @@
         /* FIM DOS NOVOS ESTILOS */
 
         .divider { height: 1.5px; background: #FC0606; margin: 0 20px; }
-        .footer-grid { background: #141941; padding: 40px 20px; display: grid; grid-template-columns: 20% 25% 27% 25%; gap: 20px; align-items: start; }
+        .footer-grid { 
+            background: #141941; 
+            padding: 60px 20px; /* Padding vertical aumentado */
+            display: grid; 
+            grid-template-columns: 20% 25% 27% 25%; 
+            gap: 20px; 
+            align-items: start; 
+        }
         .footer-grid h3 { 
             font-family: 'Cinzel', serif; 
             font-size: 20px; /* Tamanho ajustado */
@@ -389,15 +418,17 @@
     
     <!-- INÍCIO DA SEÇÃO DE DEPOIMENTOS ATUALIZADA -->
     <div class="testimonials">
-        <h2>O que nossos clientes dizem?</h2>
-        <!-- Imagem do Google corrigida -->
-        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-meu-neg%C3%B3cio-144.png?raw=true" alt="Google Logo" class="google-logo">
+        <h2>
+            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-meu-neg%C3%B3cio-144.png?raw=true" alt="Google Meu Negócio" class="google-title-logo">
+            O que nossos clientes dizem?
+        </h2>
         
         <div class="testimonials-carousel-container">
             <div class="testimonials-carousel">
                 <!-- Slide 1 -->
                 <div class="testimonial-slide">
                     <div class="review-card">
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
                         <div class="review-header">
                             <div class="avatar" style="background-color: #FF5733;">J</div>
                             <p><strong>José Vinicius</strong></p>
@@ -405,6 +436,7 @@
                         <p class="review-text">Excelente profissional, Responde rapido cumpriu com o combinado super recomendado a todos</p>
                     </div>
                     <div class="review-card">
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
                         <div class="review-header">
                             <div class="avatar" style="background-color: #C70039;">K</div>
                             <p><strong>Katarine Lima</strong></p>
@@ -415,6 +447,7 @@
                 <!-- Slide 2 -->
                 <div class="testimonial-slide">
                     <div class="review-card">
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
                         <div class="review-header">
                             <div class="avatar" style="background-color: #FFBF00;">M</div>
                             <p><strong>Mayara Pires</strong></p>
@@ -422,6 +455,7 @@
                         <p class="review-text">Profissional atencioso e muito prestativo, fez o serviço de forma rápida, organizada e eficiente, com certeza farei outras solicitações.</p>
                     </div>
                     <div class="review-card">
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
                         <div class="review-header">
                             <div class="avatar" style="background-color: #9900CC;">A</div>
                             <p><strong>Angelica Albino</strong></p>
@@ -432,6 +466,7 @@
                 <!-- Slide 3 (Novas Avaliações) -->
                 <div class="testimonial-slide">
                     <div class="review-card">
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
                         <div class="review-header">
                             <div class="avatar" style="background-color: #2E86C1;">J</div>
                             <p><strong>José Donizeti Cavenaghi</strong></p>
@@ -439,6 +474,7 @@
                         <p class="review-text">Pedi a instalação de um vidro para porta, um serviço muito simples. Passaram o orçamento na hora com um preço justo. Fizeram a instalação hoje, um serviço de muito boa qualidade. Se atendem assim em um serviço simples, imagino um mais complexo. Recomendo.</p>
                     </div>
                     <div class="review-card">
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
                         <div class="review-header">
                             <div class="avatar" style="background-color: #28B463;">L</div>
                             <p><strong>Luiz gelatti</strong></p>
@@ -449,6 +485,7 @@
                 <!-- Slide 4 -->
                 <div class="testimonial-slide">
                     <div class="review-card">
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
                         <div class="review-header">
                             <div class="avatar" style="background-color: #D35400;">K</div>
                             <p><strong>Karla Silva</strong></p>
@@ -456,6 +493,7 @@
                         <p class="review-text">Ótima prestação de serviço e qualidade do produto!</p>
                     </div>
                     <div class="review-card">
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
                         <div class="review-header">
                             <div class="avatar" style="background-color: #8E44AD;">R</div>
                             <p><strong>Roseli Rubio</strong></p>
@@ -466,6 +504,7 @@
                 <!-- Slide 5 -->
                 <div class="testimonial-slide">
                     <div class="review-card">
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
                         <div class="review-header">
                             <div class="avatar" style="background-color: #16A085;">M</div>
                             <p><strong>Maurício Iwanaga</strong></p>
@@ -473,6 +512,7 @@
                         <p class="review-text">Umas das melhores vidraçarias... honesto preço justo.. atencioso... cumpre com o prometido e dentro do prazo... parabens kibox 🙏🏾🙏🏾👊🏾👊🏾</p>
                     </div>
                     <div class="review-card">
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
                         <div class="review-header">
                             <div class="avatar" style="background-color: #F1C40F;">J</div>
                             <p><strong>Juliana rsafortes</strong></p>
@@ -483,6 +523,7 @@
                 <!-- Slide 6 -->
                 <div class="testimonial-slide">
                     <div class="review-card">
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
                         <div class="review-header">
                             <div class="avatar" style="background-color: #E74C3C;">R</div>
                             <p><strong>Rose Teixeira</strong></p>
@@ -490,6 +531,7 @@
                         <p class="review-text">Muito prestativo preço justo e trabalho limpo gostei muito</p>
                     </div>
                     <div class="review-card">
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
                         <div class="review-header">
                             <div class="avatar" style="background-color: #3498DB;">J</div>
                             <p><strong>Jessica Maciel Fiod</strong></p>
@@ -500,45 +542,77 @@
                 <!-- Slide 7 -->
                 <div class="testimonial-slide">
                     <div class="review-card">
-                        <div class="avatar" style="background-color: #1ABC9C;">T</div>
-                        <p><strong>Tania dos Santos Arruda</strong></p>
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #1ABC9C;">T</div>
+                            <p><strong>Tania dos Santos Arruda</strong></p>
+                        </div>
+                        <p class="review-text">Serviço de qualidade , gentil e atencioso, sempre que preciso grito o Kiko pra me socorrer nunca me deixou na mão 😌♥️</p>
                     </div>
                     <div class="review-card">
-                        <div class="avatar" style="background-color: #9B59B6;">S</div>
-                        <p><strong>Stephanie Gomes</strong></p>
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #9B59B6;">S</div>
+                            <p><strong>Stephanie Gomes</strong></p>
+                        </div>
+                        <p class="review-text">Gostei muito do trabalho dele, caprichoso, rápido, se precisar vou chamar mais vezes</p>
                     </div>
                 </div>
                 <!-- Slide 8 -->
                 <div class="testimonial-slide">
                     <div class="review-card">
-                        <div class="avatar" style="background-color: #F39C12;">L</div>
-                        <p><strong>Leonor Silva</strong></p>
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #F39C12;">L</div>
+                            <p><strong>Leonor Silva</strong></p>
+                        </div>
+                        <p class="review-text">O que poderia dizer dessa lugar ótimo atendimento achei o box de vidro que procurava além de ter variedades de produtos com preço acessivel</p>
                     </div>
                     <div class="review-card">
-                        <div class="avatar" style="background-color: #E67E22;">M</div>
-                        <p><strong>Maria Lúcia Malu</strong></p>
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #E67E22;">M</div>
+                            <p><strong>Maria Lúcia Malu</strong></p>
+                        </div>
+                        <p class="review-text">Ótimo atendimento e rapidez no serviço</p>
                     </div>
                 </div>
                 <!-- Slide 9 -->
                 <div class="testimonial-slide">
                     <div class="review-card">
-                        <div class="avatar" style="background-color: #2980B9;">A</div>
-                        <p><strong>Aslei Lopes</strong></p>
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #2980B9;">A</div>
+                            <p><strong>Aslei Lopes</strong></p>
+                        </div>
+                        <p class="review-text">Ótimo profissional, serviço rápido e muito bom voltaria a comprar</p>
                     </div>
                     <div class="review-card">
-                        <div class="avatar" style="background-color: #27AE60;">T</div>
-                        <p><strong>Trator_Agro_Vida</strong></p>
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%2Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #27AE60;">T</div>
+                            <p><strong>Trator_Agro_Vida</strong></p>
+                        </div>
+                        <p class="review-text">Atendimento rápido, preço justo, e o parcelamento no cartão ajuda muito... E o atendimento é ótimo...</p>
                     </div>
                 </div>
                 <!-- Slide 10 -->
                 <div class="testimonial-slide">
                     <div class="review-card">
-                        <div class="avatar" style="background-color: #C0392B;">M</div>
-                        <p><strong>Maicon Oliveira</strong></p>
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #C0392B;">M</div>
+                            <p><strong>Maicon Oliveira</strong></p>
+                        </div>
+                        <p class="review-text">Recomendo o serviço deles, melhor da cidade e com preços que cabem no bolso</p>
                     </div>
                     <div class="review-card">
-                        <div class="avatar" style="background-color: #7D3C98;">E</div>
-                        <p><strong>Eloisa oliveira</strong></p>
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #7D3C98;">E</div>
+                            <p><strong>Eloisa oliveira</strong></p>
+                        </div>
+                        <p class="review-text">Precisava de um suporte para uma porta de vidro, que foi difícil de encontrar, devido o empenho da Kibox que encontrou, e instalou obra nos. Estou muito agradecida</p>
                     </div>
                 </div>
             </div>
