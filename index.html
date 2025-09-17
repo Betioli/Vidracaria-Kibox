@@ -235,16 +235,27 @@
 
         .footer-bottom { 
             background: #141941; 
-            /* Padding ajustado: 5px (cima/baixo) e 80px (laterais) */
-            padding: 5px 80px; 
+            padding: 0 50px; /* Padding lateral reduzido para controle mais fino */
             display: flex;
-            justify-content: space-between;
+            justify-content: center; /* Centraliza o grupo de itens */
             align-items: center;
+            gap: 50px; /* Espaço entre os itens */
         }
-        .footer-bottom p { font-family: 'Montserrat', sans-serif; font-size: 15px; color: #FFFFFF; margin: 5px 0; }
+        .footer-bottom p { 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 15px; 
+            color: #FFFFFF; 
+            margin: 0; /* Remove a margem para subir o conteúdo */
+            padding: 10px 0; /* Adiciona um pequeno padding para não ficar colado */
+        }
         .footer-bottom a { font-family: 'Montserrat', sans-serif; color: #FFFFFF; text-decoration: none; }
-        .footer-right {
-            text-align: right;
+        
+        /* Remove a regra antiga */
+        /* .footer-right { text-align: right; } */
+
+        .footer-dev {
+            flex-grow: 1; /* Faz este item ocupar o espaço restante */
+            text-align: right; /* Alinha o texto à direita */
         }
         
         @media (max-width: 768px) {
@@ -560,11 +571,9 @@
         </div>
     </div>
     <div class="footer-bottom">
-        <p>2025© Vidraçaria KIBOX | Todos os direitos reservados</p>
-        <div class="footer-right">
-            <p><a href="http://localhost/bms/wordpress/politica-de-privacidade/">Políticas de Privacidade</a></p>
-            <p><a href="https://www.instagram.com/bms_trafego/">Desenvolvido por @bms_trafego</a></p>
-        </div>
+        <p class="footer-item">2025© Vidraçaria KIBOX | Todos os direitos reservados</p>
+        <p class="footer-item"><a href="http://localhost/bms/wordpress/politica-de-privacidade/">Políticas de Privacidade</a></p>
+        <p class="footer-item footer-dev"><a href="https://www.instagram.com/bms_trafego/">Desenvolvido por @bms_trafego</a></p>
     </div>
     <script>
         let slideIndex = 0;
