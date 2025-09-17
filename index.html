@@ -46,10 +46,37 @@
     <link href="https://fonts.googleapis.com/css2?family=Baskervville:wght@400;700&family=Cinzel:wght@400;700&family=Montserrat:wght@400;500&family=Red+Hat+Display:wght@400;500&display=swap" rel="stylesheet">
     <style>
         body { margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
-        header { background: #141941; padding: 20px; }
+        header { 
+            background: #141941; 
+            padding: 15px 20px; 
+            position: fixed; /* Fixa o cabeçalho no topo */
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-sizing: border-box; /* Garante que o padding não afete a largura total */
+        }
         header h1 { color: #FFFFFF; font-family: 'Montserrat', sans-serif; font-size: 20px; margin: 0; text-align: left; }
-        .hero { position: relative; height: 100vh; width: 100%; overflow: hidden; }
-        .hero .slide { height: 100vh; width: 100%; position: absolute; top: 0; left: 0; opacity: 1; transition: transform 0.5s ease-in-out; transform: translateX(0); background-size: cover; background-repeat: no-repeat; background-position: center; }
+        .hero { 
+            position: relative; 
+            height: 71vh; /* Altura aumentada de 65vh para 70vh */
+            width: 100%; 
+            overflow: hidden; 
+            margin-top: 58px; /* Adiciona espaço para o cabeçalho fixo */
+        }
+        .hero .slide { 
+            height: 71vh; /* Altura aumentada de 65vh para 70vh */
+            width: 100%; 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            opacity: 1; 
+            transition: transform 0.5s ease-in-out; 
+            transform: translateX(0); 
+            background-size: cover; 
+            background-repeat: no-repeat; 
+            background-position: center; 
+        }
         .hero .slide.active { z-index: 1; }
         .hero .slide.next { transform: translateX(100%); }
         .hero .slide.prev { transform: translateX(-100%); }
@@ -91,13 +118,15 @@
         .testimonials .arrow { color: #000000; font-size: 26px; cursor: pointer; }
         .divider { height: 1.5px; background: #FC0606; margin: 0 20px; }
         .footer-grid { background: #141941; padding: 40px 20px; display: grid; grid-template-columns: 20% 25% 27% 25%; gap: 20px; }
-        .footer-grid h3 { font-family: 'Cinzel', serif; font-size: 30px; color: #FFFFFF; }
+        .footer-grid h3 { font-family: 'Cinzel', serif; font-size: 25px; color: #FFFFFF; }
         .footer-grid p { font-family: 'Montserrat', sans-serif; font-size: 12px; color: #FFFFFF; }
         .footer-grid img { max-width: 69%; height: auto; }
         .footer-bottom { background: #141941; padding: 20px; text-align: center; }
         .footer-bottom p { font-family: 'Montserrat', sans-serif; font-size: 15px; color: #FFFFFF; margin: 0; }
         .footer-bottom a { font-family: 'Montserrat', sans-serif; color: #FFFFFF; text-decoration: none; }
+        
         @media (max-width: 768px) {
+            .hero { height: 50vh; margin-top: 55px; } /* Ajusta altura para tablet */
             .hero .slide { height: 50vh; }
             .text-btn { flex-direction: column; text-align: center; }
             .text-btn p { margin-bottom: 10px; }
@@ -105,6 +134,12 @@
             .footer-grid { grid-template-columns: 1fr; }
             .services .carousel { flex-direction: column; }
             .services .carousel img { max-width: 100%; }
+        }
+
+        /* Adicionando uma nova regra para telas menores */
+        @media (max-width: 480px) {
+            .hero { height: 45vh; } /* Ajusta altura para celular */
+            .hero .slide { height: 45vh; }
         }
     </style>
 </head>
@@ -196,7 +231,6 @@
         <div class="controls">
             <span class="arrow prev">&#10094;</span>
             <span class="dot active"></span>
-            <span class="dot"></span>
             <span class="dot"></span>
             <span class="dot"></span>
             <span class="dot"></span>
