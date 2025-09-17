@@ -233,9 +233,19 @@
             height: 32px; /* Tamanho do ícone aumentado */
         }
 
-        .footer-bottom { background: #141941; padding: 20px; text-align: center; }
-        .footer-bottom p { font-family: 'Montserrat', sans-serif; font-size: 15px; color: #FFFFFF; margin: 0; }
+        .footer-bottom { 
+            background: #141941; 
+            /* Padding ajustado: 5px (cima/baixo) e 80px (laterais) */
+            padding: 5px 80px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-bottom p { font-family: 'Montserrat', sans-serif; font-size: 15px; color: #FFFFFF; margin: 5px 0; }
         .footer-bottom a { font-family: 'Montserrat', sans-serif; color: #FFFFFF; text-decoration: none; }
+        .footer-right {
+            text-align: right;
+        }
         
         @media (max-width: 768px) {
             .hero { height: 50vh; /* A margem foi removida daqui também */ } /* Ajusta altura para tablet */
@@ -551,8 +561,10 @@
     </div>
     <div class="footer-bottom">
         <p>2025© Vidraçaria KIBOX | Todos os direitos reservados</p>
-        <p><a href="http://localhost/bms/wordpress/politica-de-privacidade/">Políticas de Privacidade</a></p>
-        <p><a href="https://www.instagram.com/bms_trafego/">Desenvolvido por @bms_trafego</a></p>
+        <div class="footer-right">
+            <p><a href="http://localhost/bms/wordpress/politica-de-privacidade/">Políticas de Privacidade</a></p>
+            <p><a href="https://www.instagram.com/bms_trafego/">Desenvolvido por @bms_trafego</a></p>
+        </div>
     </div>
     <script>
         let slideIndex = 0;
