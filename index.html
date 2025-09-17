@@ -97,27 +97,88 @@
         .text-btn p { font-family: 'Montserrat', sans-serif; font-size: 15px; color: #FFFFFF; margin: 0; text-align: left; }
         .text-btn a { font-family: 'Montserrat', sans-serif; background: #00FF19; color: #000000; padding: 10px 20px; text-decoration: none; border-radius: 10px; display: flex; align-items: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); }
         .text-btn a img { width: 20px; height: 20px; margin-right: 8px; }
-        .services { background: #000000; padding: 40px 20px; text-align: center; }
+        
+        /* ESTILOS PARA O NOVO CARROSSEL DE SERVIÇOS */
+        .services { 
+            background: #000000; 
+            padding: 40px 20px; /* Aumentando o padding lateral para dar espaço às setas */
+            text-align: center; 
+        }
         .services h2 { font-family: 'Montserrat', sans-serif; font-size: 15px; color: #FFFFFF; text-transform: uppercase; margin: 0 0 20px; }
         .services p { font-family: 'Red Hat Display', sans-serif; font-size: 18px; color: #FFFFFF; margin: 0 0 20px; }
-        .services .carousel { display: flex; justify-content: center; gap: 10px; }
-        .services .carousel img { max-width: 300px; height: auto; }
-        .services .controls { margin-top: 10px; }
-        .services .dot { height: 10px; width: 10px; background: #000000; border-radius: 50%; display: inline-block; margin: 0 5px; cursor: pointer; }
-        .services .dot.active { background: #FFFFFF; }
-        .services .arrow { color: #000000; font-size: 30px; cursor: pointer; }
-        .testimonials { background: #000000; padding: 40px 20px; text-align: center; }
-        .testimonials h2 { font-family: 'Montserrat', sans-serif; font-size: 15px; color: #FFFFFF; text-transform: uppercase; margin: 0 0 20px; }
-        .testimonials .carousel { position: relative; overflow: hidden; }
-        .testimonials .review { display: none; }
-        .testimonials .review.active { display: block; }
-        .testimonials .review img { width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; }
-        .testimonials .review p { font-family: 'Montserrat', sans-serif; font-size: 14px; color: #FFFFFF; display: inline-block; vertical-align: top; width: 80%; }
-        .testimonials .google-logo { width: 100px; margin-bottom: 20px; }
-        .testimonials .controls { margin-top: 10px; }
-        .testimonials .dot { height: 10px; width: 10px; background: #000000; border-radius: 50%; display: inline-block; margin: 0 5px; cursor: pointer; }
-        .testimonials .dot.active { background: #FFFFFF; }
-        .testimonials .arrow { color: #000000; font-size: 26px; cursor: pointer; }
+        .services-carousel-container { 
+            position: relative; 
+            max-width: 1400px; /* Aumentado de 1000px para 1400px */
+            margin: 0 auto; 
+            overflow: hidden; 
+        }
+        .services-carousel { display: flex; transition: transform 0.5s ease-in-out; }
+        .service-slide { display: flex; min-width: 100%; justify-content: center; gap: 15px; }
+        .service-slide img { 
+            width: calc((100% - 30px) / 3); /* Aumenta o tamanho das imagens para preencher o espaço */
+            /* max-width: 300px; */ /* Remove a largura máxima que estava limitando */
+            height: auto; 
+            object-fit: cover; 
+        }
+        .services .controls { position: absolute; top: 50%; width: 100%; transform: translateY(-50%); display: flex; justify-content: space-between; z-index: 2; }
+        .services .arrow { color: #FFFFFF; background-color: rgba(0,0,0,0.3); padding: 10px; border-radius: 50%; font-size: 30px; cursor: pointer; }
+        .services .dots { text-align: center; margin-top: 20px; }
+        .services .dot { height: 10px; width: 10px; background: #FFFFFF; border-radius: 50%; display: inline-block; margin: 0 5px; cursor: pointer; transition: background-color 0.3s ease; }
+        .services .dot.active { background: #00FF19; }
+        
+        /* REMOVA AS REGRAS ANTIGAS DE .services .carousel, .controls, .dot, .arrow */
+        /* .services .carousel { display: flex; justify-content: center; gap: 10px; } */
+        /* .services .carousel img { max-width: 300px; height: auto; } */
+        /* .services .controls { margin-top: 10px; } */
+        /* .services .dot { ... } */
+        /* .services .arrow { ... } */
+
+        /* INÍCIO DOS NOVOS ESTILOS PARA DEPOIMENTOS */
+        .testimonials { 
+            background: #404040; /* Nova cor de fundo */
+            padding: 40px 20px; 
+            text-align: center; 
+        }
+        .testimonials h2 { font-family: 'Montserrat', sans-serif; font-size: 15px; color: #FFFFFF; text-transform: uppercase; margin: 0 0 10px; }
+        .testimonials .google-logo { width: 80px; margin-bottom: 30px; }
+
+        .testimonials-carousel-container { position: relative; max-width: 900px; margin: 0 auto; overflow: hidden; }
+        .testimonials-carousel { display: flex; transition: transform 0.5s ease-in-out; }
+        .testimonial-slide { display: flex; min-width: 100%; justify-content: center; gap: 20px; }
+        
+        .review-card { 
+            background: #f1f1f1; /* Fundo claro para o card */
+            border-radius: 8px; 
+            padding: 20px; 
+            text-align: left; 
+            width: calc(50% - 10px); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .review-header { display: flex; align-items: center; margin-bottom: 10px; }
+        .avatar { 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            color: #FFFFFF; 
+            font-size: 20px; 
+            font-weight: bold;
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin-right: 10px; 
+        }
+        .review-header p { margin: 0; color: #333; font-size: 14px; }
+        .review-text { font-size: 14px; color: #555; margin: 0; }
+
+        .testimonials .controls { position: absolute; top: 50%; width: 100%; transform: translateY(-50%); display: flex; justify-content: space-between; z-index: 2; }
+        .testimonials .arrow { color: #FFFFFF; background-color: rgba(0,0,0,0.3); padding: 10px; border-radius: 50%; font-size: 30px; cursor: pointer; }
+        .testimonials .dots { text-align: center; margin-top: 20px; }
+        .testimonials .dot { height: 10px; width: 10px; background: #FFFFFF; border-radius: 50%; display: inline-block; margin: 0 5px; cursor: pointer; }
+        .testimonials .dot.active { background: #00FF19; }
+
+        .total-reviews { color: #FFFFFF; font-size: 14px; margin-top: 20px; }
+        /* FIM DOS NOVOS ESTILOS */
+
         .divider { height: 1.5px; background: #FC0606; margin: 0 20px; }
         .footer-grid { background: #141941; padding: 40px 20px; display: grid; grid-template-columns: 20% 25% 27% 25%; gap: 20px; }
         .footer-grid h3 { font-family: 'Cinzel', serif; font-size: 25px; color: #FFFFFF; }
@@ -134,8 +195,16 @@
             .text-btn p { margin-bottom: 10px; }
             .text-btn a { margin: 0 auto; }
             .footer-grid { grid-template-columns: 1fr; }
-            .services .carousel { flex-direction: column; }
-            .services .carousel img { max-width: 100%; }
+            
+            /* AJUSTES RESPONSIVOS PARA O CARROSSEL DE SERVIÇOS */
+            .service-slide { flex-direction: column; align-items: center; }
+            .service-slide img { width: 80%; max-width: 350px; margin-bottom: 15px; }
+            .services .controls { display: none; } /* Esconde setas grandes em telas menores */
+
+            /* AJUSTES RESPONSIVOS PARA DEPOIMENTOS */
+            .testimonial-slide { flex-direction: column; align-items: center; }
+            .review-card { width: 90%; max-width: 400px; }
+            .testimonials .controls { display: none; }
         }
 
         /* Adicionando uma nova regra para telas menores */
@@ -185,66 +254,236 @@
     <div class="services">
         <h2>Nossos serviços</h2>
         <p>Sacada | Guarda Corpo | Box | Espelho | Vidro Temperado | Forro de PVC</p>
-        <div class="carousel">
-            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/2.jpg?raw=true" alt="">
-            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/3.jpg?raw=true" alt="">
-            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/4.jpg?raw=true" alt="">
-            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/5.jpg?raw=true" alt="">
-            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/6.jpg?raw=true" alt="">
-            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/7.jpg?raw=true" alt="">
-            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/8.jpg?raw=true" alt="">
-            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/9.jpg?raw=true" alt="">
-            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/10.jpg?raw=true" alt="">
-            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/11.jpg?raw=true" alt="">
-            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/12.jpg?raw=true" alt="">
+        
+        <!-- INÍCIO DA ESTRUTURA CORRIGIDA DO CARROSSEL -->
+        <div class="services-carousel-container">
+            <div class="services-carousel">
+                <div class="service-slide active">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/1.jpg?raw=true" alt="Serviço 1">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/2.jpg?raw=true" alt="Serviço 2">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/3.jpg?raw=true" alt="Serviço 3">
+                </div>
+                <div class="service-slide">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/4.jpg?raw=true" alt="Serviço 4">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/5.jpg?raw=true" alt="Serviço 5">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/6.jpg?raw=true" alt="Serviço 6">
+                </div>
+                <div class="service-slide">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/7.jpg?raw=true" alt="Serviço 7">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/8.jpg?raw=true" alt="Serviço 8">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/9.jpg?raw=true" alt="Serviço 9">
+                </div>
+                 <div class="service-slide">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/10.jpg?raw=true" alt="Serviço 10">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/11.jpg?raw=true" alt="Serviço 11">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/12.jpg?raw=true" alt="Serviço 12">
+                </div>
+            </div>
+            <div class="controls">
+                <span class="arrow prev service-prev">&#10094;</span>
+                <span class="arrow next service-next">&#10095;</span>
+            </div>
         </div>
-        <div class="controls">
-            <span class="arrow prev">&#10094;</span>
-            <span class="dot active"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="arrow next">&#10095;</span>
+        <div class="dots service-dots">
+            <!-- Os pontos serão gerados pelo JavaScript -->
         </div>
+        <!-- FIM DA ESTRUTURA CORRIGIDA -->
+
     </div>
+    
+    <!-- INÍCIO DA SEÇÃO DE DEPOIMENTOS ATUALIZADA -->
     <div class="testimonials">
-        <h2>O que nossos clientes dizem ?</h2>
-        <img src="https://www.google.com/images/branding/googlemicrologo.png" alt="Google Logo" class="google-logo">
-        <div class="carousel">
-            <div class="review active"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23FF5733'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3EJ%3C/text%3E%3C/svg%3E" alt="José Vinicius"><p><strong>José Vinicius</strong> (6 meses atrás)<br>Excelente profissional, Responde rapido cumpriu com o combinado super recomendado a todos</p></div>
-            <div class="review"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23C70039'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3EK%3C/text%3E%3C/svg%3E" alt="Katarine Lima"><p><strong>Katarine Lima</strong><br>Serviço top de linha, faz tempo que nossa família só usa kibox vidros e tá cada vez melhor.</p></div>
-            <div class="review"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23FFBF00'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3EM%3C/text%3E%3C/svg%3E" alt="Mayara Pires"><p><strong>Mayara Pires</strong><br>Profissional atencioso e muito prestativo, fez o serviço de forma rápida, organizada e eficiente, com certeza farei outras solicitações.</p></div>
-            <div class="review"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%239900CC'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3EA%3C/text%3E%3C/svg%3E" alt="Angelica Albino"><p><strong>Angelica Albino</strong><br>Excelente profissional ,qualidade no serviço ,sem enrolação! 10👏👏</p></div>
-            <div class="review"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%2333FF57'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3EJ%3C/text%3E%3C/svg%3E" alt="José Donizeti Cavenaghi"><p><strong>José Donizeti Cavenaghi</strong><br>Pedi a instalação de um vidro para porta, um serviço muito simples. Passaram o orçamento na hora com um preço justo. Fizeram a instalação hoje, um serviço de muito boa qualidade. Se atendem assim em um serviço simples, imagino um mais complexo. Recomendo.</p></div>
-            <div class="review"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23FF33A1'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3EL%3C/text%3E%3C/svg%3E" alt="Luiz Gelatti"><p><strong>Luiz Gelatti</strong><br>Excelente serviço, extrema qualidade e profissionalismo além da qualidade e acabamento</p></div>
-            <div class="review"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%2300FFFF'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3EM%3C/text%3E%3C/svg%3E" alt="Maurício Iwanaga"><p><strong>Maurício Iwanaga</strong><br>Umas das melhores vidraçarias... honesto preço justo.. atencioso... cumpre com o prometido e dentro do prazo... parabens kibox 🙏🏾🙏🏾👊🏾👊🏾</p></div>
-            <div class="review"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23FF5733'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3ER%3C/text%3E%3C/svg%3E" alt="Roseli Rubio"><p><strong>Roseli Rubio</strong><br>Serviço de qualidade e são muito prestativo eu indico</p></div>
-            <div class="review"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23C70039'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3EM%3C/text%3E%3C/svg%3E" alt="Marcos Paulo"><p><strong>Marcos Paulo</strong><br>Francisco atencioso e prestativo, otimo trabalho. Recomendo!</p></div>
-            <div class="review"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23FFBF00'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3ET%3C/text%3E%3C/svg%3E" alt="Tania dos Santos Arruda"><p><strong>Tania dos Santos Arruda</strong><br>Serviço de qualidade , gentil e atencioso, sempre que preciso grito o Kiko pra me socorrer nunca me deixou na mão 😌♥️</p></div>
-            <div class="review"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%239900CC'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3ES%3C/text%3E%3C/svg%3E" alt="Stephanie Gomes"><p><strong>Stephanie Gomes</strong><br>Gostei muito do trabalho dele, caprichoso, rápido, se precisar vou chamar mais vezes</p></div>
-            <div class="review"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%2333FF57'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23000'%3EL%3C/text%3E%3C/svg%3E" alt="Leonor Silva"><p><strong>Leonor Silva</strong><br>O que poderia dizer dessa lugar ótimo atendimento achei o box de vidro que procurava além de ter variedades de produtos com preço acessivel</p></div>
+        <h2>O que nossos clientes dizem?</h2>
+        <!-- Imagem do Google corrigida -->
+        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-meu-neg%C3%B3cio-144.png?raw=true" alt="Google Logo" class="google-logo">
+        
+        <div class="testimonials-carousel-container">
+            <div class="testimonials-carousel">
+                <!-- Slide 1 -->
+                <div class="testimonial-slide">
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #FF5733;">J</div>
+                            <p><strong>José Vinicius</strong></p>
+                        </div>
+                        <p class="review-text">Excelente profissional, Responde rapido cumpriu com o combinado super recomendado a todos</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #C70039;">K</div>
+                            <p><strong>Katarine Lima</strong></p>
+                        </div>
+                        <p class="review-text">Serviço top de linha, faz tempo que nossa família só usa kibox vidros e tá cada vez melhor.</p>
+                    </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="testimonial-slide">
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #FFBF00;">M</div>
+                            <p><strong>Mayara Pires</strong></p>
+                        </div>
+                        <p class="review-text">Profissional atencioso e muito prestativo, fez o serviço de forma rápida, organizada e eficiente, com certeza farei outras solicitações.</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #9900CC;">A</div>
+                            <p><strong>Angelica Albino</strong></p>
+                        </div>
+                        <p class="review-text">Excelente profissional ,qualidade no serviço ,sem enrolação! 10👏👏</p>
+                    </div>
+                </div>
+                <!-- Slide 3 (Novas Avaliações) -->
+                <div class="testimonial-slide">
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #2E86C1;">J</div>
+                            <p><strong>José Donizeti Cavenaghi</strong></p>
+                        </div>
+                        <p class="review-text">Pedi a instalação de um vidro para porta, um serviço muito simples. Passaram o orçamento na hora com um preço justo. Fizeram a instalação hoje, um serviço de muito boa qualidade. Se atendem assim em um serviço simples, imagino um mais complexo. Recomendo.</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #28B463;">L</div>
+                            <p><strong>Luiz gelatti</strong></p>
+                        </div>
+                        <p class="review-text">Excelente serviço, extrema qualidade e profissionalismo além da qualidade e acabamento</p>
+                    </div>
+                </div>
+                <!-- Slide 4 -->
+                <div class="testimonial-slide">
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #D35400;">K</div>
+                            <p><strong>Karla Silva</strong></p>
+                        </div>
+                        <p class="review-text">Ótima prestação de serviço e qualidade do produto!</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #8E44AD;">R</div>
+                            <p><strong>Roseli Rubio</strong></p>
+                        </div>
+                        <p class="review-text">Serviço de qualidade e são muito prestativo eu indico</p>
+                    </div>
+                </div>
+                <!-- Slide 5 -->
+                <div class="testimonial-slide">
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #16A085;">M</div>
+                            <p><strong>Maurício Iwanaga</strong></p>
+                        </div>
+                        <p class="review-text">Umas das melhores vidraçarias... honesto preço justo.. atencioso... cumpre com o prometido e dentro do prazo... parabens kibox 🙏🏾🙏🏾👊🏾👊🏾</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #F1C40F;">J</div>
+                            <p><strong>Juliana rsafortes</strong></p>
+                        </div>
+                        <p class="review-text">preço justo, serviço rápido e impecável!</p>
+                    </div>
+                </div>
+                <!-- Slide 6 -->
+                <div class="testimonial-slide">
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #E74C3C;">R</div>
+                            <p><strong>Rose Teixeira</strong></p>
+                        </div>
+                        <p class="review-text">Muito prestativo preço justo e trabalho limpo gostei muito</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #3498DB;">J</div>
+                            <p><strong>Jessica Maciel Fiod</strong></p>
+                        </div>
+                        <p class="review-text">Ótimo atendimento e serviço, recomendo</p>
+                    </div>
+                </div>
+                <!-- Slide 7 -->
+                <div class="testimonial-slide">
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #1ABC9C;">T</div>
+                            <p><strong>Tania dos Santos Arruda</strong></p>
+                        </div>
+                        <p class="review-text">Serviço de qualidade , gentil e atencioso, sempre que preciso grito o Kiko pra me socorrer nunca me deixou na mão 😌♥️</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #9B59B6;">S</div>
+                            <p><strong>Stephanie Gomes</strong></p>
+                        </div>
+                        <p class="review-text">Gostei muito do trabalho dele, caprichoso, rápido, se precisar vou chamar mais vezes</p>
+                    </div>
+                </div>
+                <!-- Slide 8 -->
+                <div class="testimonial-slide">
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #F39C12;">L</div>
+                            <p><strong>Leonor Silva</strong></p>
+                        </div>
+                        <p class="review-text">O que poderia dizer dessa lugar ótimo atendimento achei o box de vidro que procurava além de ter variedades de produtos com preço acessivel</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #E67E22;">M</div>
+                            <p><strong>Maria Lúcia Malu</strong></p>
+                        </div>
+                        <p class="review-text">Ótimo atendimento e rapidez no serviço</p>
+                    </div>
+                </div>
+                <!-- Slide 9 -->
+                <div class="testimonial-slide">
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #2980B9;">A</div>
+                            <p><strong>Aslei Lopes</strong></p>
+                        </div>
+                        <p class="review-text">Ótimo profissional, serviço rápido e muito bom voltaria a comprar</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #27AE60;">T</div>
+                            <p><strong>Trator_Agro_Vida</strong></p>
+                        </div>
+                        <p class="review-text">Atendimento rápido, preço justo, e o parcelamento no cartão ajuda muito... E o atendimento é ótimo...</p>
+                    </div>
+                </div>
+                <!-- Slide 10 -->
+                <div class="testimonial-slide">
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #C0392B;">M</div>
+                            <p><strong>Maicon Oliveira</strong></p>
+                        </div>
+                        <p class="review-text">Recomendo o serviço deles, melhor da cidade e com preços que cabem no bolso</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #7D3C98;">E</div>
+                            <p><strong>Eloisa oliveira</strong></p>
+                        </div>
+                        <p class="review-text">Precisava de um suporte para uma porta de vidro, que foi difícil de encontrar, devido o empenho da Kibox que encontrou, e instalou obra nos. Estou muito agradecida</p>
+                    </div>
+                </div>
+            </div>
+            <div class="controls">
+                <span class="arrow prev testimonial-prev">&#10094;</span>
+                <span class="arrow next testimonial-next">&#10095;</span>
+            </div>
         </div>
-        <div class="controls">
-            <span class="arrow prev">&#10094;</span>
-            <span class="dot active"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="arrow next">&#10095;</span>
+        
+        <div class="dots testimonial-dots">
+            <!-- Dots serão gerados via JS -->
         </div>
+        
+        <p class="total-reviews">Avaliações totais 4.9 de 5, com base em 60 avaliações</p>
     </div>
+    <!-- FIM DA SEÇÃO DE DEPOIMENTOS -->
+
     <div class="divider"></div>
     <div class="footer-grid">
         <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/1.png?raw=true" alt="Ícone">
@@ -321,99 +560,100 @@
         });
         showSlides();
 
-        let serviceIndex = 0;
-        const serviceSlides = document.querySelectorAll(".services .carousel img");
-        const serviceDots = document.querySelectorAll(".services .dot");
-        function showServices() {
-            for (let i = 0; i < serviceSlides.length; i++) {
-                serviceSlides[i].style.display = "none";
-                serviceDots[i].classList.remove("active");
-            }
-            serviceIndex++;
-            if (serviceIndex > serviceSlides.length) serviceIndex = 1;
-            serviceSlides[serviceIndex - 1].style.display = "block";
-            serviceDots[serviceIndex - 1].classList.add("active");
-        }
-        document.querySelector(".services .prev").addEventListener("click", () => {
-            serviceIndex--;
-            if (serviceIndex < 1) serviceIndex = serviceSlides.length;
-            for (let i = 0; i < serviceSlides.length; i++) {
-                serviceSlides[i].style.display = "none";
-                serviceDots[i].classList.remove("active");
-            }
-            serviceSlides[serviceIndex - 1].style.display = "block";
-            serviceDots[serviceIndex - 1].classList.add("active");
-        });
-        document.querySelector(".services .next").addEventListener("click", () => {
-            for (let i = 0; i < serviceSlides.length; i++) {
-                serviceSlides[i].style.display = "none";
-                serviceDots[i].classList.remove("active");
-            }
-            serviceIndex++;
-            if (serviceIndex > serviceSlides.length) serviceIndex = 1;
-            serviceSlides[serviceIndex - 1].style.display = "block";
-            serviceDots[serviceIndex - 1].classList.add("active");
-        });
-        for (let i = 0; i < serviceDots.length; i++) {
-            serviceDots[i].addEventListener("click", () => {
-                for (let j = 0; j < serviceSlides.length; j++) {
-                    serviceSlides[j].style.display = "none";
-                    serviceDots[j].classList.remove("active");
-                }
-                serviceIndex = i + 1;
-                serviceSlides[i].style.display = "block";
-                serviceDots[i].classList.add("active");
-            });
-        }
-        serviceSlides[0].style.display = "block";
-        serviceDots[0].classList.add("active");
+        // SUBSTITUA O CÓDIGO ANTIGO DO CARROSSEL DE SERVIÇOS POR ESTE:
+        const servicesCarousel = document.querySelector('.services-carousel');
+        const serviceSlides = document.querySelectorAll('.service-slide');
+        const servicePrevBtn = document.querySelector('.service-prev');
+        const serviceNextBtn = document.querySelector('.service-next');
+        const serviceDotsContainer = document.querySelector('.service-dots');
 
-        let testimonialIndex = 0;
-        const testimonialSlides = document.querySelectorAll(".testimonials .review");
-        const testimonialDots = document.querySelectorAll(".testimonials .dot");
-        function showTestimonials() {
-            for (let i = 0; i < testimonialSlides.length; i++) {
-                testimonialSlides[i].classList.remove("active");
-                testimonialDots[i].classList.remove("active");
-            }
-            testimonialIndex++;
-            if (testimonialIndex > testimonialSlides.length) testimonialIndex = 1;
-            testimonialSlides[testimonialIndex - 1].classList.add("active");
-            testimonialDots[testimonialIndex - 1].classList.add("active");
+        let currentServiceIndex = 0;
+        const totalServiceSlides = serviceSlides.length;
+
+        // Criar os dots dinamicamente
+        for (let i = 0; i < totalServiceSlides; i++) {
+            const dot = document.createElement('span');
+            dot.classList.add('dot');
+            dot.addEventListener('click', () => goToServiceSlide(i));
+            serviceDotsContainer.appendChild(dot);
         }
-        document.querySelector(".testimonials .prev").addEventListener("click", () => {
-            testimonialIndex--;
-            if (testimonialIndex < 1) testimonialIndex = testimonialSlides.length;
-            for (let i = 0; i < testimonialSlides.length; i++) {
-                testimonialSlides[i].classList.remove("active");
-                testimonialDots[i].classList.remove("active");
-            }
-            testimonialSlides[testimonialIndex - 1].classList.add("active");
-            testimonialDots[testimonialIndex - 1].classList.add("active");
-        });
-        document.querySelector(".testimonials .next").addEventListener("click", () => {
-            for (let i = 0; i < testimonialSlides.length; i++) {
-                testimonialSlides[i].classList.remove("active");
-                testimonialDots[i].classList.remove("active");
-            }
-            testimonialIndex++;
-            if (testimonialIndex > testimonialSlides.length) testimonialIndex = 1;
-            testimonialSlides[testimonialIndex - 1].classList.add("active");
-            testimonialDots[testimonialIndex - 1].classList.add("active");
-        });
-        for (let i = 0; i < testimonialDots.length; i++) {
-            testimonialDots[i].addEventListener("click", () => {
-                for (let j = 0; j < testimonialSlides.length; j++) {
-                    testimonialSlides[j].classList.remove("active");
-                    testimonialDots[j].classList.remove("active");
-                }
-                testimonialIndex = i + 1;
-                testimonialSlides[i].classList.add("active");
-                testimonialDots[i].classList.add("active");
+
+        const serviceDots = document.querySelectorAll('.service-dots .dot');
+
+        function updateServiceCarousel() {
+            servicesCarousel.style.transform = `translateX(-${currentServiceIndex * 100}%)`;
+            serviceDots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentServiceIndex);
             });
         }
-        testimonialSlides[0].classList.add("active");
-        testimonialDots[0].classList.add("active");
+
+        function goToServiceSlide(index) {
+            currentServiceIndex = index;
+            updateServiceCarousel();
+        }
+
+        serviceNextBtn.addEventListener('click', () => {
+            currentServiceIndex = (currentServiceIndex + 1) % totalServiceSlides;
+            updateServiceCarousel();
+        });
+
+        servicePrevBtn.addEventListener('click', () => {
+            currentServiceIndex = (currentServiceIndex - 1 + totalServiceSlides) % totalServiceSlides;
+            updateServiceCarousel();
+        });
+
+        // Inicializa o carrossel
+        updateServiceCarousel();
+
+
+        // INÍCIO DO NOVO CÓDIGO DO CARROSSEL DE DEPOIMENTOS
+        const testimonialsCarousel = document.querySelector('.testimonials-carousel');
+        const testimonialSlides = document.querySelectorAll('.testimonial-slide');
+        const testimonialPrevBtn = document.querySelector('.testimonial-prev');
+        const testimonialNextBtn = document.querySelector('.testimonial-next');
+        const testimonialDotsContainer = document.querySelector('.testimonial-dots');
+
+        let currentTestimonialIndex = 0;
+        const totalTestimonialSlides = testimonialSlides.length;
+
+        // Criar os dots dinamicamente
+        for (let i = 0; i < totalTestimonialSlides; i++) {
+            const dot = document.createElement('span');
+            dot.classList.add('dot');
+            dot.addEventListener('click', () => goToTestimonialSlide(i));
+            testimonialDotsContainer.appendChild(dot);
+        }
+
+        const testimonialDots = document.querySelectorAll('.testimonial-dots .dot');
+
+        function updateTestimonialCarousel() {
+            if (testimonialsCarousel) {
+                testimonialsCarousel.style.transform = `translateX(-${currentTestimonialIndex * 100}%)`;
+                testimonialDots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentTestimonialIndex);
+                });
+            }
+        }
+
+        function goToTestimonialSlide(index) {
+            currentTestimonialIndex = index;
+            updateTestimonialCarousel();
+        }
+
+        testimonialNextBtn.addEventListener('click', () => {
+            currentTestimonialIndex = (currentTestimonialIndex + 1) % totalTestimonialSlides;
+            updateTestimonialCarousel();
+        });
+
+        testimonialPrevBtn.addEventListener('click', () => {
+            currentTestimonialIndex = (currentTestimonialIndex - 1 + totalTestimonialSlides) % totalTestimonialSlides;
+            updateTestimonialCarousel();
+        });
+
+        // Inicializa o carrossel de depoimentos
+        updateTestimonialCarousel();
+        // FIM DO NOVO CÓDIGO
+
     </script>
 </body>
 </html>
