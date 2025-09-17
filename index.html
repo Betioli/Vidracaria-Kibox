@@ -49,12 +49,13 @@
         header { 
             background: #141941; 
             padding: 15px 20px; 
-            position: fixed; /* Fixa o cabeçalho no topo */
-            width: 100%;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-            box-sizing: border-box; /* Garante que o padding não afete a largura total */
+            /* As 5 linhas abaixo foram removidas para que o cabeçalho não seja mais fixo */
+            /* position: fixed; */
+            /* width: 100%; */
+            /* top: 0; */
+            /* left: 0; */
+            /* z-index: 1000; */
+            box-sizing: border-box;
         }
         header h1 { color: #FFFFFF; font-family: 'Montserrat', sans-serif; font-size: 20px; margin: 0; text-align: left; }
         .hero { 
@@ -62,7 +63,8 @@
             height: 71vh; /* Altura aumentada de 65vh para 70vh */
             width: 100%; 
             overflow: hidden; 
-            margin-top: 58px; /* Adiciona espaço para o cabeçalho fixo */
+            /* A linha abaixo foi removida pois o cabeçalho não é mais fixo */
+            /* margin-top: 58px; */
         }
         .hero .slide { 
             height: 71vh; /* Altura aumentada de 65vh para 70vh */
@@ -126,7 +128,7 @@
         .footer-bottom a { font-family: 'Montserrat', sans-serif; color: #FFFFFF; text-decoration: none; }
         
         @media (max-width: 768px) {
-            .hero { height: 50vh; margin-top: 55px; } /* Ajusta altura para tablet */
+            .hero { height: 50vh; /* A margem foi removida daqui também */ } /* Ajusta altura para tablet */
             .hero .slide { height: 50vh; }
             .text-btn { flex-direction: column; text-align: center; }
             .text-btn p { margin-bottom: 10px; }
