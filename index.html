@@ -115,10 +115,36 @@
         
         /* ESTILOS PARA O NOVO CARROSSEL DE SERVIÇOS */
         .services { 
-            background: #ffffff; 
-            padding: 40px 20px; /* Aumentando o padding lateral para dar espaço às setas */
+            /* A imagem de fundo foi removida daqui */
+            background-color: #F5F5F5; /* Fundo branco para a seção */
+            padding: 40px 20px;
             text-align: center; 
+            position: relative; /* Necessário para posicionar o elemento decorativo */
+            overflow: hidden; /* Evita que a imagem vaze para fora da seção */
         }
+
+        /* Elemento decorativo adicionado com ::after */
+        .services::after {
+            content: '';
+            background-image: url('https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/Forma%20abstrata.jpg?raw=true');
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: absolute;
+            top: -100px;  /* Puxa a imagem bem para cima */
+            right: -100px; /* Puxa a imagem bem para a direita */
+            width: 600px;  /* Aumenta a largura */
+            height: 600px; /* Aumenta a altura */
+            z-index: 0; /* Coloca a imagem atrás do conteúdo */
+            opacity: 1; /* Opacidade removida, cor original */
+            transform: rotate(15deg); /* Gira a imagem para esconder as bordas */
+        }
+
+        /* Garante que o conteúdo fique na frente da imagem */
+        .services h2, .services p, .services-carousel-container {
+            position: relative;
+            z-index: 1;
+        }
+
         .services h2 { font-family: 'Montserrat', sans-serif; font-size: 15px; color: #000000; text-transform: uppercase; margin: 0 0 20px; }
         .services p { font-family: 'Red Hat Display', sans-serif; font-size: 18px; color: #000000; margin: 0 0 20px; }
         .services-carousel-container { 
@@ -474,69 +500,45 @@
                 <!-- Slide 7 -->
                 <div class="testimonial-slide">
                     <div class="review-card">
-                        <div class="review-header">
-                            <div class="avatar" style="background-color: #1ABC9C;">T</div>
-                            <p><strong>Tania dos Santos Arruda</strong></p>
-                        </div>
-                        <p class="review-text">Serviço de qualidade , gentil e atencioso, sempre que preciso grito o Kiko pra me socorrer nunca me deixou na mão 😌♥️</p>
+                        <div class="avatar" style="background-color: #1ABC9C;">T</div>
+                        <p><strong>Tania dos Santos Arruda</strong></p>
                     </div>
                     <div class="review-card">
-                        <div class="review-header">
-                            <div class="avatar" style="background-color: #9B59B6;">S</div>
-                            <p><strong>Stephanie Gomes</strong></p>
-                        </div>
-                        <p class="review-text">Gostei muito do trabalho dele, caprichoso, rápido, se precisar vou chamar mais vezes</p>
+                        <div class="avatar" style="background-color: #9B59B6;">S</div>
+                        <p><strong>Stephanie Gomes</strong></p>
                     </div>
                 </div>
                 <!-- Slide 8 -->
                 <div class="testimonial-slide">
                     <div class="review-card">
-                        <div class="review-header">
-                            <div class="avatar" style="background-color: #F39C12;">L</div>
-                            <p><strong>Leonor Silva</strong></p>
-                        </div>
-                        <p class="review-text">O que poderia dizer dessa lugar ótimo atendimento achei o box de vidro que procurava além de ter variedades de produtos com preço acessivel</p>
+                        <div class="avatar" style="background-color: #F39C12;">L</div>
+                        <p><strong>Leonor Silva</strong></p>
                     </div>
                     <div class="review-card">
-                        <div class="review-header">
-                            <div class="avatar" style="background-color: #E67E22;">M</div>
-                            <p><strong>Maria Lúcia Malu</strong></p>
-                        </div>
-                        <p class="review-text">Ótimo atendimento e rapidez no serviço</p>
+                        <div class="avatar" style="background-color: #E67E22;">M</div>
+                        <p><strong>Maria Lúcia Malu</strong></p>
                     </div>
                 </div>
                 <!-- Slide 9 -->
                 <div class="testimonial-slide">
                     <div class="review-card">
-                        <div class="review-header">
-                            <div class="avatar" style="background-color: #2980B9;">A</div>
-                            <p><strong>Aslei Lopes</strong></p>
-                        </div>
-                        <p class="review-text">Ótimo profissional, serviço rápido e muito bom voltaria a comprar</p>
+                        <div class="avatar" style="background-color: #2980B9;">A</div>
+                        <p><strong>Aslei Lopes</strong></p>
                     </div>
                     <div class="review-card">
-                        <div class="review-header">
-                            <div class="avatar" style="background-color: #27AE60;">T</div>
-                            <p><strong>Trator_Agro_Vida</strong></p>
-                        </div>
-                        <p class="review-text">Atendimento rápido, preço justo, e o parcelamento no cartão ajuda muito... E o atendimento é ótimo...</p>
+                        <div class="avatar" style="background-color: #27AE60;">T</div>
+                        <p><strong>Trator_Agro_Vida</strong></p>
                     </div>
                 </div>
                 <!-- Slide 10 -->
                 <div class="testimonial-slide">
                     <div class="review-card">
-                        <div class="review-header">
-                            <div class="avatar" style="background-color: #C0392B;">M</div>
-                            <p><strong>Maicon Oliveira</strong></p>
-                        </div>
-                        <p class="review-text">Recomendo o serviço deles, melhor da cidade e com preços que cabem no bolso</p>
+                        <div class="avatar" style="background-color: #C0392B;">M</div>
+                        <p><strong>Maicon Oliveira</strong></p>
                     </div>
                     <div class="review-card">
-                        <div class="review-header">
-                            <div class="avatar" style="background-color: #7D3C98;">E</div>
-                            <p><strong>Eloisa oliveira</strong></p>
-                        </div>
-                        <p class="review-text">Precisava de um suporte para uma porta de vidro, que foi difícil de encontrar, devido o empenho da Kibox que encontrou, e instalou obra nos. Estou muito agradecida</p>
+                        <div class="avatar" style="background-color: #7D3C98;">E</div>
+                        <p><strong>Eloisa oliveira</strong></p>
                     </div>
                 </div>
             </div>
