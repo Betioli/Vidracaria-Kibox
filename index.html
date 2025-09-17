@@ -87,11 +87,26 @@
         .hero .slide-content h2 { font-family: 'Baskervville', serif; font-size: 36px; text-transform: uppercase; margin: 0; }
         .hero .slide-content p { font-family: 'Red Hat Display', sans-serif; font-size: 25px; margin: 10px 0 0; }
         .hero .controls { position: absolute; width: 100%; height: 100%; }
-        .hero .arrow { position: absolute; top: 50%; transform: translateY(-50%); color: #000000; font-size: 30px; cursor: pointer; z-index: 2; }
+        .hero .arrow { 
+            position: absolute; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            color: #000000; /* Cor alterada para preto */
+            font-size: 40px; /* Tamanho aumentado para melhor visibilidade */
+            cursor: pointer; 
+            z-index: 2; 
+            /* Removido background, padding e border-radius */
+        }
         .hero .prev { left: 20px; }
         .hero .next { right: 20px; }
-        .hero .dots { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); }
-        .hero .dot { height: 10px; width: 10px; background: #000000; border-radius: 50%; display: inline-block; margin: 0 5px; cursor: pointer; }
+        .hero .dots { 
+            position: absolute; 
+            bottom: 20px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            z-index: 2; /* Adicionado z-index para garantir a visibilidade */
+        }
+        .hero .dot { height: 10px; width: 10px; background: #FFFFFF; border-radius: 50%; display: inline-block; margin: 0 5px; cursor: pointer; }
         .hero .dot.active { background: #FFFFFF; }
         .text-btn { background: #404040; padding: 40px 20px; display: flex; justify-content: space-between; align-items: center; }
         .text-btn p { font-family: 'Montserrat', sans-serif; font-size: 15px; color: #FFFFFF; margin: 0; text-align: left; }
@@ -121,7 +136,12 @@
             object-fit: cover; 
         }
         .services .controls { position: absolute; top: 50%; width: 100%; transform: translateY(-50%); display: flex; justify-content: space-between; z-index: 2; }
-        .services .arrow { color: #FFFFFF; background-color: rgba(0,0,0,0.3); padding: 10px; border-radius: 50%; font-size: 30px; cursor: pointer; }
+        .services .arrow { 
+            color: #000000; /* Cor alterada para preto */
+            font-size: 40px; /* Tamanho aumentado */
+            cursor: pointer; 
+            /* Removido background, padding e border-radius */
+        }
         .services .dots { text-align: center; margin-top: 20px; }
         .services .dot { height: 10px; width: 10px; background: #FFFFFF; border-radius: 50%; display: inline-block; margin: 0 5px; cursor: pointer; transition: background-color 0.3s ease; }
         .services .dot.active { background: #00FF19; }
@@ -171,7 +191,12 @@
         .review-text { font-size: 14px; color: #555; margin: 0; }
 
         .testimonials .controls { position: absolute; top: 50%; width: 100%; transform: translateY(-50%); display: flex; justify-content: space-between; z-index: 2; }
-        .testimonials .arrow { color: #FFFFFF; background-color: rgba(0,0,0,0.3); padding: 10px; border-radius: 50%; font-size: 30px; cursor: pointer; }
+        .testimonials .arrow { 
+            color: #000000; /* Cor alterada para preto */
+            font-size: 40px; /* Tamanho aumentado */
+            cursor: pointer; 
+            /* Removido background, padding e border-radius */
+        }
         .testimonials .dots { text-align: center; margin-top: 20px; }
         .testimonials .dot { height: 10px; width: 10px; background: #FFFFFF; border-radius: 50%; display: inline-block; margin: 0 5px; cursor: pointer; }
         .testimonials .dot.active { background: #00FF19; }
