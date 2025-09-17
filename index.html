@@ -205,10 +205,34 @@
         /* FIM DOS NOVOS ESTILOS */
 
         .divider { height: 1.5px; background: #FC0606; margin: 0 20px; }
-        .footer-grid { background: #141941; padding: 40px 20px; display: grid; grid-template-columns: 20% 25% 27% 25%; gap: 20px; }
-        .footer-grid h3 { font-family: 'Cinzel', serif; font-size: 25px; color: #FFFFFF; }
-        .footer-grid p { font-family: 'Montserrat', sans-serif; font-size: 12px; color: #FFFFFF; }
-        .footer-grid img { max-width: 69%; height: auto; }
+        .footer-grid { background: #141941; padding: 40px 20px; display: grid; grid-template-columns: 20% 25% 27% 25%; gap: 20px; align-items: start; }
+        .footer-grid h3 { 
+            font-family: 'Cinzel', serif; 
+            font-size: 20px; /* Tamanho ajustado */
+            font-weight: 400; /* Peso ajustado */
+            color: #FFFFFF; 
+        }
+        .footer-grid p { 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 14px; /* Tamanho aumentado para 14px */
+            font-weight: 400; /* Peso ajustado */
+            color: #FFFFFF; 
+        }
+        .footer-grid > img { max-width: 69%; height: auto; } /* Seletor ajustado para não afetar o ícone */
+        
+        /* Estilos para o link de contato com ícone */
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+        .contact-link img {
+            width: 32px; /* Tamanho do ícone aumentado */
+            height: 32px; /* Tamanho do ícone aumentado */
+        }
+
         .footer-bottom { background: #141941; padding: 20px; text-align: center; }
         .footer-bottom p { font-family: 'Montserrat', sans-serif; font-size: 15px; color: #FFFFFF; margin: 0; }
         .footer-bottom a { font-family: 'Montserrat', sans-serif; color: #FFFFFF; text-decoration: none; }
@@ -514,7 +538,16 @@
         <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/1.png?raw=true" alt="Ícone">
         <div><h3>Onde estamos</h3><p>Endereço: Rua Silveira Martins, 1723 - Campos Elísios, Ribeirão Preto - SP CEP: 14080-110</p></div>
         <div><h3>Horário de funcionamento</h3><p>Segunda a Sexta das 09:00 as 17:00</p></div>
-        <div><h3>Contatos</h3><p><a href="https://www.instagram.com/kiboxvidros/">Kiboxvidros</a></p></div>
+        <div>
+            <h3>Contatos</h3>
+            <p>
+                <!-- Link com ícone do Instagram adicionado -->
+                <a href="https://www.instagram.com/kiboxvidros/" class="contact-link">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-instagram-96.png?raw=true" alt="Instagram">
+                    Kiboxvidros
+                </a>
+            </p>
+        </div>
     </div>
     <div class="footer-bottom">
         <p>2025© Vidraçaria KIBOX | Todos os direitos reservados</p>
