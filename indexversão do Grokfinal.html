@@ -1,444 +1,157 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Vidraçaria Kibox - Especialistas em vidro temperado, portas, janelas, box e espelhos em Ribeirão Preto. 22 anos de experiência.">
-    <meta name="keywords" content="vidraçaria, vidro temperado, Ribeirão Preto, box, espelhos, sacada">
-    <title>Vidraçaria Kibox - Excelência em Vidro Temperado</title>
+    <title>Vidraçaria Kibox - Landing Page</title>
+    <!-- Preload das imagens do slide principal para carregamento mais rápido -->
     <link rel="preload" as="image" href="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/Slide%201%20compactadas.jpg?raw=true">
     <link rel="preload" as="image" href="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/Slide%202%20compactadas.png?raw=true">
     <link rel="preload" as="image" href="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/Slide%203%20compactadas.jpg?raw=true">
     <link href="https://fonts.googleapis.com/css2?family=Baskervville:wght@400;700&family=Cinzel:wght@400;700&family=Montserrat:wght@400;500&family=Red+Hat+Display:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #141941;
-            --secondary-color: #404040;
-            --accent-color: #00FF19;
-            --text-color: #FFFFFF;
-        }
-        
-        * {
-            box-sizing: border-box;
-        }
-        
-        body { 
-            margin: 0; 
-            padding-top: 58px; /* Ajuste para o header fixo */
-            font-family: 'Montserrat', sans-serif; 
-            line-height: 1.6;
-        }
-        
+        body { margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
         header { 
-            background: var(--primary-color); 
+            background: #141941; 
             padding: 15px 20px; 
-            position: fixed;
-            width: 100%;
-            top: 0;
-            left: 0;
-            z-index: 1000;
             box-sizing: border-box;
         }
-        
-        header h1 { 
-            color: var(--text-color); 
-            font-family: 'Montserrat', sans-serif; 
-            font-size: 20px; 
-            margin: 0; 
-            text-align: left; 
-        }
-        
+        header h1 { color: #FFFFFF; font-family: 'Montserrat', sans-serif; font-size: 20px; margin: 0; text-align: left; }
         .hero { 
             position: relative; 
-            height: 75vh; /* Ajustado para maximizar a altura */
+            height: 71vh; 
             width: 100%; 
             overflow: hidden; 
         }
-        
         .hero .slide { 
-            height: 75vh; /* Ajustado para maximizar a altura */
+            height: 71vh; 
             width: 100%; 
             position: absolute; 
             top: 0; 
             left: 0; 
-            opacity: 0; 
-            transition: opacity 1s ease-in-out; 
+            opacity: 1; 
+            transition: transform 0.5s ease-in-out; 
+            transform: translateX(0); 
             background-size: cover; 
             background-repeat: no-repeat; 
             background-position: center; 
         }
-        
-        .hero .slide::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-        }
-        
-        .hero .slide.active { opacity: 1; z-index: 1; }
-        
-        .hero .slide-content { 
-            position: absolute; 
-            top: 50%; 
-            left: 50%; 
-            transform: translate(-50%, -50%); 
-            text-align: center; 
-            color: var(--text-color); 
-            opacity: 0; 
-            animation: slideUp 1s forwards; 
-            z-index: 2;
-            width: 90%;
-            max-width: 800px;
-        }
-        
-        @keyframes slideUp { 
-            from { transform: translate(-50%, -40%); opacity: 0; } 
-            to { transform: translate(-50%, -50%); opacity: 1; } 
-        }
-        
-        .hero .slide-content h2 { 
-            font-family: 'Baskervville', serif; 
-            font-size: clamp(24px, 5vw, 36px);
-            text-transform: uppercase; 
-            margin: 0 0 15px; 
-        }
-        
-        .hero .slide-content p { 
-            font-family: 'Red Hat Display', sans-serif; 
-            font-size: clamp(18px, 3vw, 25px); 
-            margin: 0; 
-        }
-
-        .hero .controls { 
-            position: absolute; 
-            width: 100%; 
-            height: 100%; 
-            z-index: 3;
-        }
-        
+        .hero .slide.active { z-index: 1; }
+        .hero .slide.next { transform: translateX(100%); }
+        .hero .slide.prev { transform: translateX(-100%); }
+        .hero .slide-content { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #FFFFFF; opacity: 0; animation: slideUp 1s forwards; }
+        @keyframes slideUp { from { transform: translate(-50%, -40%); opacity: 0; } to { transform: translate(-50%, -50%); opacity: 1; } }
+        .hero .slide-content h2 { font-family: 'Baskervville', serif; font-size: 36px; text-transform: uppercase; margin: 0; }
+        .hero .slide-content p { font-family: 'Red Hat Display', sans-serif; font-size: 25px; margin: 10px 0 0; }
+        .hero .controls { position: absolute; width: 100%; height: 100%; }
         .hero .arrow { 
             position: absolute; 
             top: 50%; 
             transform: translateY(-50%); 
-            color: var(--text-color); 
+            color: #ffffff; 
             font-size: 40px; 
             cursor: pointer; 
             z-index: 2; 
-            background: rgba(0, 0, 0, 0.3);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.3s;
         }
-        
-        .hero .arrow:hover {
-            background: rgba(0, 0, 0, 0.6);
-        }
-        
         .hero .prev { left: 20px; }
         .hero .next { right: 20px; }
-        
         .hero .dots { 
             position: absolute; 
             bottom: 20px; 
             left: 50%; 
             transform: translateX(-50%); 
-            z-index: 2;
-            display: flex;
-            gap: 10px;
+            z-index: 2; 
         }
+        .hero .dot { height: 10px; width: 10px; background: #FFFFFF; border-radius: 50%; display: inline-block; margin: 0 5px; cursor: pointer; }
+        .hero .dot.active { background: #FFFFFF; }
+        .text-btn { background: #404040; padding: 40px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .text-btn p { font-family: 'Montserrat', sans-serif; font-size: 15px; color: #FFFFFF; margin: 0; text-align: left; }
+        .text-btn a { font-family: 'Montserrat', sans-serif; background: #00FF19; color: #000000; padding: 20px 70px; text-decoration: none; border-radius: 10px; display: flex; align-items: center; box-shadow: 0 5px 15px rgb(0, 0, 0); }
+        .text-btn a img { width: 20px; height: 20px; margin-right: 8px; }
         
-        .hero .dot { 
-            height: 12px; 
-            width: 12px; 
-            background: var(--text-color); 
-            border-radius: 50%; 
-            cursor: pointer; 
-            transition: all 0.3s;
-        }
-        
-        .hero .dot.active { 
-            background: var(--accent-color); 
-            transform: scale(1.2);
-        }
-
-        .text-btn { 
-            background: var(--secondary-color); 
-            padding: 20px; /* Reduzido para caber na dobra */
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-        }
-        
-        .text-btn p { 
-            font-family: 'Montserrat', sans-serif; 
-            font-size: 15px; 
-            color: var(--text-color); 
-            margin: 0; 
-            text-align: left; 
-            flex: 1;
-        }
-        
-        .text-btn a { 
-            font-family: 'Montserrat', sans-serif; 
-            background: var(--accent-color); 
-            color: #000000; 
-            padding: 15px 30px; 
-            text-decoration: none; 
-            border-radius: 10px; 
-            display: flex; 
-            align-items: center; 
-            box-shadow: 0 5px 15px rgb(0, 0, 0);
-            transition: all 0.3s;
-            font-weight: bold;
-            white-space: nowrap;
-            margin-left: 20px;
-        }
-        
-        .text-btn a:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        .text-btn a img { 
-            width: 20px; 
-            height: 20px; 
-            margin-right: 8px; 
-        }
-        
-        /* ESTILOS PARA O CARROSSEL DE SERVIÇOS */
         .services { 
-            background-color: #F5F5F5;
-            padding: 60px 20px;
+            background-color: #F5F5F5; 
+            padding: 40px 20px;
             text-align: center; 
-            position: relative;
-            overflow: hidden;
+            position: relative; 
+            overflow: hidden; 
         }
-
         .services::after {
             content: '';
             background-image: url('https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/Forma%20abstrata.jpg?raw=true');
             background-size: contain;
             background-repeat: no-repeat;
             position: absolute;
-            top: -100px;
-            right: -100px;
-            width: 600px;
-            height: 600px;
-            z-index: 0;
-            opacity: 0.3;
-            transform: rotate(15deg);
+            top: -100px;  
+            right: -100px; 
+            width: 600px;  
+            height: 600px; 
+            z-index: 0; 
+            opacity: 1; 
+            transform: rotate(15deg); 
         }
-
         .services h2, .services p, .services-carousel-container {
             position: relative;
             z-index: 1;
         }
-
-        .services h2 { 
-            font-family: 'Montserrat', sans-serif; 
-            font-size: 24px; 
-            color: #000000; 
-            text-transform: uppercase; 
-            margin: 0 0 15px; 
-        }
-        
-        .services p { 
-            font-family: 'Red Hat Display', sans-serif; 
-            font-size: 18px; 
-            color: #000000; 
-            margin: 0 0 40px; 
-        }
-        
+        .services h2 { font-family: 'Montserrat', sans-serif; font-size: 15px; color: #000000; text-transform: uppercase; margin: 0 0 20px; }
+        .services p { font-family: 'Red Hat Display', sans-serif; font-size: 18px; color: #000000; margin: 0 0 20px; }
         .services-carousel-container { 
             position: relative; 
-            max-width: 1400px;
+            max-width: 1400px; 
             margin: 0 auto; 
             overflow: hidden; 
         }
-        
-        .services-carousel { 
-            display: flex; 
-            transition: transform 0.5s ease-in-out; 
-        }
-        
-        .service-slide { 
-            display: flex; 
-            min-width: 100%; 
-            justify-content: center; 
-            gap: 15px; 
-            padding: 10px;
-        }
-        
+        .services-carousel { display: flex; transition: transform 0.5s ease-in-out; }
+        .service-slide { display: flex; min-width: 100%; justify-content: center; gap: 15px; }
         .service-slide img { 
-            width: calc((100% - 30px) / 3);
-            height: auto;
-            aspect-ratio: 1 / 1;
+            width: calc((100% - 30px) / 3); 
+            height: auto; 
             object-fit: cover; 
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s;
         }
-        
-        .service-slide img:hover {
-            transform: scale(1.03);
-        }
-        
-        .services .controls { 
-            position: absolute; 
-            top: 50%; 
-            width: 100%; 
-            transform: translateY(-50%); 
-            display: flex; 
-            justify-content: space-between; 
-            z-index: 2; 
-        }
-        
+        .services .controls { position: absolute; top: 50%; width: 100%; transform: translateY(-50%); display: flex; justify-content: space-between; z-index: 2; }
         .services .arrow { 
-            color: #000000;
-            font-size: 30px;
+            color: #ffffff; 
+            font-size: 40px; 
             cursor: pointer; 
-            background: rgba(255, 255, 255, 0.7);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.3s;
         }
+        .services .dots { text-align: center; margin-top: 20px; }
+        .services .dot { height: 10px; width: 10px; background: #000000; border-radius: 50%; display: inline-block; margin: 0 5px; cursor: pointer; transition: background-color 0.3s ease; }
+        .services .dot.active { background: #00FF19; }
         
-        .services .arrow:hover {
-            background: rgba(255, 255, 255, 1);
-        }
-        
-        .services .dots { 
-            text-align: center; 
-            margin-top: 20px; 
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .services .dot { 
-            height: 10px; 
-            width: 10px; 
-            background: #000000; 
-            border-radius: 50%; 
-            cursor: pointer; 
-            transition: all 0.3s;
-        }
-        
-        .services .dot.active { 
-            background: var(--accent-color); 
-            transform: scale(1.2);
-        }
-        
-        /* ESTILOS PARA DEPOIMENTOS */
         .testimonials { 
-            background: var(--secondary-color);
-            padding: 60px 20px;
+            background: #404040; 
+            padding: 20px 20px; 
             text-align: center; 
-            position: relative; /* PARENT */
         }
-        
         .testimonials h2 { 
             font-family: 'Montserrat', sans-serif; 
-            font-size: 24px; 
-            color: var(--text-color); 
+            font-size: 15px; 
+            color: #FFFFFF; 
             text-transform: uppercase; 
             margin: 0 0 30px; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            gap: 10px;
+            gap: 10px; 
         }
-        
         .google-title-logo { 
-            width: 40px;
+            width: 40px; 
             height: auto;
         }
-        
-        .testimonials-carousel-container { 
-            position: relative; 
-            max-width: 900px; 
-            margin: 0 auto; 
-            overflow: hidden; 
-        }
-        
-        .testimonials-carousel { 
-            display: flex; 
-            transition: transform 0.5s ease-in-out; 
-        }
-        
-        .testimonial-slide { 
-            display: flex; 
-            min-width: 100%; 
-            justify-content: center; 
-            gap: 20px; 
-            padding: 10px;
-        }
+        .testimonials-carousel-container { position: relative; max-width: 900px; margin: 0 auto; overflow: hidden; }
+        .testimonials-carousel { display: flex; transition: transform 0.5s ease-in-out; }
+        .testimonial-slide { display: flex; min-width: 100%; justify-content: center; gap: 20px; }
         
         .review-card { 
-            background: #f8f8f8;
+            background: #f1f1f1; 
             border-radius: 8px; 
-            padding: 25px; 
+            padding: 20px; 
             text-align: left; 
             width: calc(50% - 10px); 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            position: relative;
-            transition: transform 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: relative; 
         }
-        
-        .review-card:hover {
-            transform: translateY(-5px);
-        }
-        
         .google-review-logo {
             position: absolute;
             top: 15px;
@@ -446,18 +159,12 @@
             width: 24px;
             height: auto;
         }
-        
-        .review-header { 
-            display: flex; 
-            align-items: center; 
-            margin-bottom: 10px; 
-        }
-        
+        .review-header { display: flex; align-items: center; margin-bottom: 10px; }
         .avatar { 
             width: 40px; 
             height: 40px; 
             border-radius: 50%; 
-            color: var(--text-color); 
+            color: #FFFFFF; 
             font-size: 20px; 
             font-weight: bold;
             display: flex; 
@@ -465,329 +172,95 @@
             justify-content: center; 
             margin-right: 10px; 
         }
-        
-        .review-header p { 
-            margin: 0; 
-            color: #333; 
-            font-size: 16px; 
-            font-weight: bold;
-        }
+        .review-header p { margin: 0; color: #333; font-size: 14px; }
+        .review-text { font-size: 14px; color: #555; margin: 0; }
 
-        .stars {
-            color: #FFD700;
-            font-size: 16px;
-            display: block;
-            margin-top: 5px;
-        }
-
-        .review-text { 
-            font-size: 15px; 
-            color: #555; 
-            margin: 0; 
-            line-height: 1.5;
-        }
-        
-        .testimonials .controls { 
-            position: absolute; 
-            top: 50%; 
-            width: 100%; 
-            transform: translateY(-50%); 
-            display: flex; 
-            justify-content: space-between; 
-            z-index: 2; 
-            pointer-events: none; 
-            max-width: 900px; 
-            left: 50%;
-            transform: translateX(-50%) translateY(-50%);
-        }
-        
+        .testimonials .controls { position: absolute; top: 50%; width: 100%; transform: translateY(-50%); display: flex; justify-content: space-between; z-index: 2; }
         .testimonials .arrow { 
-            color: #000000;
-            font-size: 30px;
+            color: #000000; 
+            font-size: 31px; 
             cursor: pointer; 
-            background: rgba(255, 255, 255, 0.7);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.3s;
-            pointer-events: auto; 
         }
-        
-        .testimonials .arrow:hover {
-            background: rgba(255, 255, 255, 1);
-        }
-        
-        .testimonials .testimonial-prev {
-            left: -50px; 
-        }
-        
-        .testimonials .testimonial-next {
-            right: -50px; 
-        }
+        .testimonials .dots { text-align: center; margin-top: 20px; }
+        .testimonials .dot { height: 10px; width: 10px; background: #FFFFFF; border-radius: 50%; display: inline-block; margin: 0 5px; cursor: pointer; }
+        .testimonials .dot.active { background: #00FF19; }
 
-        .testimonials .dots { 
-            text-align: center; 
-            margin-top: 30px; 
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .testimonials .dot { 
-            height: 10px; 
-            width: 10px; 
-            background: var(--text-color); 
-            border-radius: 50%; 
-            cursor: pointer; 
-            transition: all 0.3s;
-        }
-        
-        .testimonials .dot.active { 
-            background: var(--accent-color); 
-            transform: scale(1.2);
-        }
-
-        .total-reviews { 
-            color: var(--text-color); 
-            font-size: 16px; 
-            margin-top: 30px; 
-            font-style: italic;
-        }
-        
-        .divider { 
-            height: 1.5px; 
-            background: #FC0606; 
-            margin: 0 20px; 
-        }
-        
+        .total-reviews { color: #FFFFFF; font-size: 14px; margin-top: 20px; }
+        .divider { height: 1.5px; background: #FC0606; margin: 0 20px; }
         .footer-grid { 
-            background: var(--primary-color); 
-            padding: 60px 20px;
+            background: #141941; 
+            padding: 60px 20px; 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
-            gap: 30px; 
+            grid-template-columns: 20% 25% 27% 25%; 
+            gap: 20px; 
             align-items: start; 
         }
-        
         .footer-grid h3 { 
             font-family: 'Cinzel', serif; 
-            font-size: 20px;
-            font-weight: 400;
-            color: var(--text-color); 
-            margin: 0 0 15px;
+            font-size: 20px; 
+            font-weight: 400; 
+            color: #FFFFFF; 
         }
-        
         .footer-grid p { 
             font-family: 'Montserrat', sans-serif; 
-            font-size: 15px;
-            font-weight: 400;
-            color: var(--text-color); 
-            margin: 0;
-            line-height: 1.6;
+            font-size: 14px; 
+            font-weight: 400; 
+            color: #FFFFFF; 
         }
-        
-        .footer-grid > img { 
-            max-width: 200px; 
-            height: auto; 
-        }
+        .footer-grid > img { max-width: 69%; height: auto; }
         
         .contact-link {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            color: var(--text-color);
+            color: #FFFFFF;
             text-decoration: none;
-            transition: opacity 0.3s;
         }
-        
-        .contact-link:hover {
-            opacity: 0.8;
-        }
-        
         .contact-link img {
-            width: 32px;
-            height: 32px;
+            width: 32px; 
+            height: 32px; 
         }
 
         .footer-bottom { 
-            background: var(--primary-color); 
-            padding: 20px 50px;
+            background: #141941; 
+            padding: 0 50px; 
             display: flex;
-            justify-content: space-between;
+            justify-content: center; 
             align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
+            gap: 50px; 
         }
-        
         .footer-bottom p { 
             font-family: 'Montserrat', sans-serif; 
-            font-size: 14px; 
-            color: var(--text-color); 
-            margin: 0;
+            font-size: 15px; 
+            color: #FFFFFF; 
+            margin: 0; 
+            padding: 10px 0; 
         }
-        
-        .footer-bottom a { 
-            font-family: 'Montserrat', sans-serif; 
-            color: var(--text-color); 
-            text-decoration: none;
-            transition: opacity 0.3s;
-        }
-        
-        .footer-bottom a:hover {
-            opacity: 0.8;
-        }
+        .footer-bottom a { font-family: 'Montserrat', sans-serif; color: #FFFFFF; text-decoration: none; }
         
         .footer-dev {
-            text-align: right;
-        }
-        
-        /* RESPONSIVIDADE */
-        @media (max-width: 1024px) {
-            .service-slide img {
-                height: 250px;
-            }
-        }
-        
-        @media (max-width: 900px) {
-            .testimonial-slide {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .review-card {
-                width: 100%;
-                max-width: 500px;
-                margin-bottom: 20px;
-            }
-
-            .testimonials .controls {
-                max-width: 100%;
-                left: 0;
-                transform: none;
-                justify-content: space-between;
-                padding: 0 15px;
-            }
-            
-            .testimonials .testimonial-prev,
-            .testimonials .testimonial-next {
-                position: static;
-                left: auto;
-                right: auto;
-            }
+            flex-grow: 1; 
+            text-align: right; 
         }
         
         @media (max-width: 768px) {
-            .hero { 
-                height: 50vh;
-            }
-            
-            .hero .slide { 
-                height: 50vh;
-            }
-            
-            .text-btn { 
-                flex-direction: column; 
-                text-align: center; 
-                padding: 20px;
-            }
-            
-            .text-btn p { 
-                margin-bottom: 20px; 
-                text-align: center;
-            }
-            
-            .text-btn a { 
-                margin: 0; 
-            }
-            
-            .service-slide {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .service-slide img { 
-                width: 100%; 
-                max-width: 400px; 
-                margin-bottom: 15px; 
-                height: auto;
-            }
-            
-            .services .controls,
-            .testimonials .controls { 
-                display: none; 
-            }
-            
-            .footer-grid { 
-                grid-template-columns: 1fr; 
-                text-align: center;
-                gap: 30px;
-            }
-            
-            .footer-grid > img {
-                margin: 0 auto;
-            }
-            
-            .contact-link {
-                justify-content: center;
-            }
-            
-            .footer-bottom {
-                flex-direction: column;
-                text-align: center;
-                padding: 20px;
-            }
-            
-            .footer-dev {
-                text-align: center;
-            }
+            .hero { height: 50vh; } 
+            .hero .slide { height: 50vh; }
+            .text-btn { flex-direction: column; text-align: center; }
+            .text-btn p { margin-bottom: 10px; }
+            .text-btn a { margin: 0 auto; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .service-slide { flex-direction: column; align-items: center; }
+            .service-slide img { width: 80%; max-width: 350px; margin-bottom: 15px; }
+            .services .controls { display: none; }
+            .testimonial-slide { flex-direction: column; align-items: center; }
+            .review-card { width: 90%; max-width: 400px; }
+            .testimonials .controls { display: none; }
         }
 
         @media (max-width: 480px) {
-            .hero { 
-                height: 45vh;
-            }
-            
-            .hero .slide { 
-                height: 45vh;
-            }
-            
-            .hero .arrow {
-                width: 40px;
-                height: 40px;
-                font-size: 30px;
-            }
-            
-            .services, .testimonials {
-                padding: 40px 15px;
-            }
-            
-            .review-card {
-                padding: 20px;
-            }
-        }
-        
-        /* Melhorias de acessibilidade */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-        
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
+            .hero { height: 45vh; }
+            .hero .slide { height: 45vh; }
         }
     </style>
 </head>
@@ -795,7 +268,6 @@
     <header>
         <h1>Vidraçaria Kibox Excelência em vidro</h1>
     </header>
-    
     <div class="hero">
         <div class="slide active" style="background-image: url('https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/Slide%201%20compactadas.jpg?raw=true');">
             <div class="slide-content">
@@ -815,72 +287,60 @@
                 <p>Gratuito e sem Complicação</p>
             </div>
         </div>
-
         <div class="controls">
-            <span class="arrow prev" aria-label="Slide anterior">&#10094;</span>
-            <span class="arrow next" aria-label="Próximo slide">&#10095;</span>
+            <span class="arrow prev">&#10094;</span>
+            <span class="arrow next">&#10095;</span>
             <div class="dots">
-                <span class="dot active" aria-label="Slide 1"></span>
-                <span class="dot" aria-label="Slide 2"></span>
-                <span class="dot" aria-label="Slide 3"></span>
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
             </div>
         </div>
     </div>
-    
     <div class="text-btn">
         <p><strong>Atuamos exclusivamente no centro de </strong><strong>Ribeirão Preto - SP</strong><br /><br /> Para suprir o grande número de prédios e lojas comerciais, sabemos da necessidade e da rapidez tanto no orçamento quanto na execução do serviço.</p>
-        <a href="https://api.whatsapp.com/send/?phone=5516996197527&text&type=phone_number&app_absent=0">
-            <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-whatsapp-48.png?raw=true" alt="WhatsApp">
-            <strong>Peça seu Orçamento</strong>
-        </a>
+        <a href="https://api.whatsapp.com/send/?phone=5516996197527&text&type=phone_number&app_absent=0"><img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-whatsapp-48.png?raw=true" alt="WhatsApp"><strong>Peça seu Orçamento</a></strong>
     </div>
-    
-    <section class="services" aria-labelledby="services-heading">
-        <h2 id="services-heading">Nossos serviços</h2>
+    <div class="services">
+        <h2>Nossos serviços</h2>
         <p>Sacada | Guarda Corpo | Box | Espelho | Vidro Temperado | Forro de PVC</p>
         
         <div class="services-carousel-container">
             <div class="services-carousel">
                 <div class="service-slide active">
-                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/1.jpg?raw=true" alt="Serviço 1 - Exemplo de instalação de vidro">
-                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/2.jpg?raw=true" alt="Serviço 2 - Box de vidro para banheiro">
-                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/3.jpg?raw=true" alt="Serviço 3 - Guarda-corpo de vidro para sacada">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/1.jpg?raw=true" alt="Serviço 1">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/2.jpg?raw=true" alt="Serviço 2">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/3.jpg?raw=true" alt="Serviço 3">
                 </div>
                 <div class="service-slide">
-                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/4.jpg?raw=true" alt="Serviço 4 - Espelho decorativo">
-                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/5.jpg?raw=true" alt="Serviço 5 - Porta de vidro temperado">
-                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/6.jpg?raw=true" alt="Serviço 6 - Janela de vidro">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/4.jpg?raw=true" alt="Serviço 4">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/5.jpg?raw=true" alt="Serviço 5">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/6.jpg?raw=true" alt="Serviço 6">
                 </div>
                 <div class="service-slide">
-                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/7.jpg?raw=true" alt="Serviço 7 - Divisória de vidro">
-                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/8.jpg?raw=true" alt="Serviço 8 - Vitrine comercial">
-                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/9.jpg?raw=true" alt="Serviço 9 - Forro de PVC">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/7.jpg?raw=true" alt="Serviço 7">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/8.jpg?raw=true" alt="Serviço 8">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/9.jpg?raw=true" alt="Serviço 9">
                 </div>
                  <div class="service-slide">
-                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/10.jpg?raw=true" alt="Serviço 10 - Sacada envidraçada">
-                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/11.jpg?raw=true" alt="Serviço 11 - Espelho com iluminação">
-                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/12.jpg?raw=true" alt="Serviço 12 - Detalhe de instalação">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/10.jpg?raw=true" alt="Serviço 10">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/11.jpg?raw=true" alt="Serviço 11">
+                    <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/12.jpg?raw=true" alt="Serviço 12">
                 </div>
             </div>
             <div class="controls">
-                <span class="arrow prev service-prev" aria-label="Slide anterior">&#10094;</span>
-                <span class="arrow next service-next" aria-label="Próximo slide">&#10095;</span>
+                <span class="arrow prev service-prev">&#10094;</span>
+                <span class="arrow next service-next">&#10095;</span>
             </div>
         </div>
-        <div class="dots service-dots" role="tablist">
-            <span class="dot active"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
+        <div class="dots service-dots">
         </div>
-    </section>
-    
-    <section class="testimonials" aria-labelledby="testimonials-heading">
-        <h2 id="testimonials-heading">
+    </div>
+    <div class="testimonials">
+        <h2>
             <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-meu-neg%C3%B3cio-144.png?raw=true" alt="Google Meu Negócio" class="google-title-logo">
             O que nossos clientes dizem?
         </h2>
-        
         <div class="testimonials-carousel-container">
             <div class="testimonials-carousel">
                 <div class="testimonial-slide">
@@ -890,16 +350,14 @@
                             <div class="avatar" style="background-color: #FF5733;">J</div>
                             <p><strong>José Vinicius</strong></p>
                         </div>
-                        <span class="stars">★★★★★</span>
                         <p class="review-text">Excelente profissional, Responde rapido cumpriu com o combinado super recomendado a todos</p>
                     </div>
-                    <div class="review-card katarine-card">
+                    <div class="review-card">
                         <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
                         <div class="review-header">
                             <div class="avatar" style="background-color: #C70039;">K</div>
                             <p><strong>Katarine Lima</strong></p>
                         </div>
-                        <span class="stars">★★★★★</span>
                         <p class="review-text">Serviço top de linha, faz tempo que nossa família só usa kibox vidros e tá cada vez melhor.</p>
                     </div>
                 </div>
@@ -907,113 +365,179 @@
                     <div class="review-card">
                         <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
                         <div class="review-header">
-                            <div class="avatar" style="background-color: #3498DB;">F</div>
-                            <p><strong>Fabiano Silva</strong></p>
+                            <div class="avatar" style="background-color: #FFBF00;">M</div>
+                            <p><strong>Mayara Pires</strong></p>
                         </div>
-                        <span class="stars">★★★★★</span>
-                        <p class="review-text">A empresa Kibox é sem dúvida a melhor vidraçaria de Ribeirão, pontual, honesta, sem enrolação. O atendimento é nota 10!</p>
+                        <p class="review-text">Profissional atencioso e muito prestativo, fez o serviço de forma rápida, organizada e eficiente, com certeza farei outras solicitações.</p>
                     </div>
                     <div class="review-card">
                         <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
                         <div class="review-header">
-                            <div class="avatar" style="background-color: #2ECC71;">R</div>
-                            <p><strong>Renata Alves</strong></p>
+                            <div class="avatar" style="background-color: #9900CC;">A</div>
+                            <p><strong>Angelica Albino</strong></p>
                         </div>
-                        <span class="stars">★★★★★</span>
-                        <p class="review-text">Ótimo atendimento e serviços impecáveis. Superaram minhas expectativas. Recomendo de olhos fechados!</p>
+                        <p class="review-text">Excelente profissional ,qualidade no serviço ,sem enrolação! 10👏👏</p>
                     </div>
                 </div>
                 <div class="testimonial-slide">
                     <div class="review-card">
                         <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
                         <div class="review-header">
-                            <div class="avatar" style="background-color: #8E44AD;">A</div>
-                            <p><strong>André Martins</strong></p>
+                            <div class="avatar" style="background-color: #2E86C1;">J</div>
+                            <p><strong>José Donizeti Cavenaghi</strong></p>
                         </div>
-                        <span class="stars">★★★★★</span>
-                        <p class="review-text">Excelente trabalho e profissionalismo. Fiquei muito satisfeito com o resultado final da minha sacada.</p>
+                        <p class="review-text">Pedi a instalação de um vidro para porta, um serviço muito simples. Passaram o orçamento na hora com um preço justo. Fizeram a instalação hoje, um serviço de muito boa qualidade. Se atendem assim em um serviço simples, imagino um mais complexo. Recomendo.</p>
                     </div>
                     <div class="review-card">
                         <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
                         <div class="review-header">
-                            <div class="avatar" style="background-color: #F1C40F;">L</div>
-                            <p><strong>Lucas Pereira</strong></p>
+                            <div class="avatar" style="background-color: #28B463;">L</div>
+                            <p><strong>Luiz gelatti</strong></p>
                         </div>
-                        <span class="stars">★★★★★</span>
-                        <p class="review-text">Preço justo e qualidade impecável. A equipe é super atenciosa e o serviço foi rápido e limpo.</p>
+                        <p class="review-text">Excelente serviço, extrema qualidade e profissionalismo além da qualidade e acabamento</p>
                     </div>
                 </div>
                 <div class="testimonial-slide">
                     <div class="review-card">
                         <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
                         <div class="review-header">
-                            <div class="avatar" style="background-color: #E74C3C;">B</div>
-                            <p><strong>Beatriz Souza</strong></p>
+                            <div class="avatar" style="background-color: #D35400;">K</div>
+                            <p><strong>Karla Silva</strong></p>
                         </div>
-                        <span class="stars">★★★★★</span>
-                        <p class="review-text">Contratei para a instalação de um box no meu banheiro. Atendimento e execução do serviço impecáveis.</p>
+                        <p class="review-text">Ótima prestação de serviço e qualidade do produto!</p>
                     </div>
                     <div class="review-card">
                         <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
                         <div class="review-header">
-                            <div class="avatar" style="background-color: #34495E;">D</div>
-                            <p><strong>Diego Costa</strong></p>
+                            <div class="avatar" style="background-color: #8E44AD;">R</div>
+                            <p><strong>Roseli Rubio</strong></p>
                         </div>
-                        <span class="stars">★★★★★</span>
-                        <p class="review-text">Melhor vidraçaria da região. Orçamento rápido, sem burocracia e serviço entregue antes do prazo.</p>
+                        <p class="review-text">Serviço de qualidade e são muito prestativo eu indico</p>
                     </div>
                 </div>
                 <div class="testimonial-slide">
                     <div class="review-card">
                         <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
                         <div class="review-header">
-                            <div class="avatar" style="background-color: #9B59B6;">G</div>
-                            <p><strong>Gabriela Santos</strong></p>
+                            <div class="avatar" style="background-color: #16A085;">M</div>
+                            <p><strong>Maurício Iwanaga</strong></p>
                         </div>
-                        <span class="stars">★★★★★</span>
-                        <p class="review-text">A Kibox resolveu um problema de vidro quebrado na minha loja em poucas horas. Profissionais e muito eficientes.</p>
+                        <p class="review-text">Umas das melhores vidraçarias... honesto preço justo.. atencioso... cumpre com o prometido e dentro do prazo... parabens kibox 🙏🏾🙏🏾👊🏾👊🏾</p>
                     </div>
                     <div class="review-card">
                         <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
                         <div class="review-header">
-                            <div class="avatar" style="background-color: #1ABC9C;">C</div>
-                            <p><strong>Carlos Rocha</strong></p>
+                            <div class="avatar" style="background-color: #F1C40F;">J</div>
+                            <p><strong>Juliana rsafortes</strong></p>
                         </div>
-                        <span class="stars">★★★★★</span>
-                        <p class="review-text">Instalação de espelhos perfeita. Deu um toque especial à minha sala. Atendimento e qualidade excelentes.</p>
+                        <p class="review-text">preço justo, serviço rápido e impecável!</p>
+                    </div>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="review-card">
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #E74C3C;">R</div>
+                            <p><strong>Rose Teixeira</strong></p>
+                        </div>
+                        <p class="review-text">Muito prestativo preço justo e trabalho limpo gostei muito</p>
+                    </div>
+                    <div class="review-card">
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #3498DB;">J</div>
+                            <p><strong>Jessica Maciel Fiod</strong></p>
+                        </div>
+                        <p class="review-text">Ótimo atendimento e serviço, recomendo</p>
+                    </div>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="review-card">
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #1ABC9C;">T</div>
+                            <p><strong>Tania dos Santos Arruda</strong></p>
+                        </div>
+                        <p class="review-text">Serviço de qualidade , gentil e atencioso, sempre que preciso grito o Kiko pra me socorrer nunca me deixou na mão 😌♥️</p>
+                    </div>
+                    <div class="review-card">
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #9B59B6;">S</div>
+                            <p><strong>Stephanie Gomes</strong></p>
+                        </div>
+                        <p class="review-text">Gostei muito do trabalho dele, caprichoso, rápido, se precisar vou chamar mais vezes</p>
+                    </div>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="review-card">
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #F39C12;">L</div>
+                            <p><strong>Leonor Silva</strong></p>
+                        </div>
+                        <p class="review-text">O que poderia dizer dessa lugar ótimo atendimento achei o box de vidro que procurava além de ter variedades de produtos com preço acessivel</p>
+                    </div>
+                    <div class="review-card">
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #E67E22;">M</div>
+                            <p><strong>Maria Lúcia Malu</strong></p>
+                        </div>
+                        <p class="review-text">Ótimo atendimento e rapidez no serviço</p>
+                    </div>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="review-card">
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #2980B9;">A</div>
+                            <p><strong>Aslei Lopes</strong></p>
+                        </div>
+                        <p class="review-text">Ótimo profissional, serviço rápido e muito bom voltaria a comprar</p>
+                    </div>
+                    <div class="review-card">
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%2Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #27AE60;">T</div>
+                            <p><strong>Trator_Agro_Vida</strong></p>
+                        </div>
+                        <p class="review-text">Atendimento rápido, preço justo, e o parcelamento no cartão ajuda muito... E o atendimento é ótimo...</p>
+                    </div>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="review-card">
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #C0392B;">M</div>
+                            <p><strong>Maicon Oliveira</strong></p>
+                        </div>
+                        <p class="review-text">Recomendo o serviço deles, melhor da cidade e com preços que cabem no bolso</p>
+                    </div>
+                    <div class="review-card">
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
+                        <div class="review-header">
+                            <div class="avatar" style="background-color: #7D3C98;">E</div>
+                            <p><strong>Eloisa oliveira</strong></p>
+                        </div>
+                        <p class="review-text">Precisava de um suporte para uma porta de vidro, que foi difícil de encontrar, devido o empenho da Kibox que encontrou, e instalou obra nos. Estou muito agradecida</p>
                     </div>
                 </div>
             </div>
+            <div class="controls">
+                <span class="arrow prev testimonial-prev">&#10094;</span>
+                <span class="arrow next testimonial-next">&#10095;</span>
+            </div>
         </div>
-        
-        <div class="controls">
-            <span class="arrow prev testimonial-prev" aria-label="Depoimento anterior">&#10094;</span>
-            <span class="arrow next testimonial-next" aria-label="Próximo depoimento">&#10095;</span>
+        <div class="dots testimonial-dots">
         </div>
-        
-        <div class="dots testimonial-dots" role="tablist">
-            <span class="dot active"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-        </div>
-        
         <p class="total-reviews">Avaliações totais 4.9 de 5, com base em 60 avaliações</p>
-    </section>
-
+    </div>
     <div class="divider"></div>
-    
-    <footer class="footer-grid">
-        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/Logo%20da%20empresa%20%20512x512%20Kibox.png" alt="Kibox Vidraçaria">
-        <div>
-            <h3>Onde estamos</h3>
-            <p>Endereço: Rua Silveira Martins, 1723 - Campos Elísios, Ribeirão Preto - SP CEP: 14080-110</p>
-        </div>
-        <div>
-            <h3>Horário de funcionamento</h3>
-            <p>Segunda a Sexta das 09:00 as 17:00</p>
-        </div>
+    <div class="footer-grid">
+        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/Logo%20da%20empresa%20%20512x512%20Kibox.png?raw=true" alt="Logo Kibox">
+        <div><h3>Onde estamos</h3><p>Endereço: Rua Silveira Martins, 1723 - Campos Elísios, Ribeirão Preto - SP CEP: 14080-110</p></div>
+        <div><h3>Horário de funcionamento</h3><p>Segunda a Sexta das 09:00 as 17:00</p></div>
         <div>
             <h3>Contatos</h3>
             <p>
@@ -1023,165 +547,161 @@
                 </a>
             </p>
         </div>
-    </footer>
-    
+    </div>
     <div class="footer-bottom">
         <p class="footer-item">2025© Vidraçaria KIBOX | Todos os direitos reservados</p>
         <p class="footer-item"><a href="http://localhost/bms/wordpress/politica-de-privacidade/">Políticas de Privacidade</a></p>
         <p class="footer-item footer-dev"><a href="https://www.instagram.com/bms_trafego/">Desenvolvido por @bms_trafego</a></p>
     </div>
-    
     <script>
-        // Hero Slider
-        const heroSlides = document.querySelectorAll(".hero .slide");
-        const heroDots = document.querySelectorAll(".hero .dot");
-        const heroPrev = document.querySelector(".hero .prev");
-        const heroNext = document.querySelector(".hero .next");
-        let heroSlideIndex = 0;
-        let heroTimer;
-
-        function showHeroSlides() {
-            if (heroSlides.length === 0) return;
-            heroSlides.forEach(slide => slide.classList.remove("active"));
-            heroDots.forEach(dot => dot.classList.remove("active"));
-            
-            heroSlideIndex++;
-            if (heroSlideIndex > heroSlides.length) { heroSlideIndex = 1; }
-            
-            heroSlides[heroSlideIndex - 1].classList.add("active");
-            if (heroDots.length > 0) heroDots[heroSlideIndex - 1].classList.add("active");
-            
-            resetHeroTimer();
-        }
-
-        function changeHeroSlide(n) {
-            if (heroSlides.length === 0) return;
-            heroSlideIndex += n;
-            if (heroSlideIndex < 1) { heroSlideIndex = heroSlides.length; }
-            if (heroSlideIndex > heroSlides.length) { heroSlideIndex = 1; }
-            
-            heroSlides.forEach(slide => slide.classList.remove("active"));
-            heroDots.forEach(dot => dot.classList.remove("active"));
-
-            heroSlides[heroSlideIndex - 1].classList.add("active");
-            if (heroDots.length > 0) heroDots[heroSlideIndex - 1].classList.add("active");
-
-            resetHeroTimer();
-        }
-        
-        function resetHeroTimer() {
-            clearTimeout(heroTimer);
-            heroTimer = setTimeout(showHeroSlides, 8000); // 8 segundos por slide
-        }
-        
-        if (heroNext) heroNext.addEventListener("click", () => changeHeroSlide(1));
-        if (heroPrev) heroPrev.addEventListener("click", () => changeHeroSlide(-1));
-        
-        if (heroDots.length > 0) {
-            heroDots.forEach((dot, index) => {
-                dot.addEventListener("click", () => {
-                    heroSlideIndex = index + 1;
-                    changeHeroSlide(0);
-                });
-            });
-        }
-
-        if (heroSlides.length > 0) resetHeroTimer();
-
-        // Services Carousel
-        const servicesCarousel = document.querySelector(".services-carousel");
-        const servicesSlides = document.querySelectorAll(".services-carousel .service-slide");
-        const servicesPrev = document.querySelector(".services .service-prev");
-        const servicesNext = document.querySelector(".services .service-next");
-        let servicesCurrentSlide = 0;
-        const servicesDots = document.querySelectorAll(".services .service-dots .dot");
-
-        function updateServicesCarousel() {
-            if (servicesCarousel) {
-                const offset = -servicesCurrentSlide * 100;
-                servicesCarousel.style.transform = `translateX(${offset}%)`;
+        let slideIndex = 0;
+        const slides = document.getElementsByClassName("slide");
+        function showSlides() {
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove("active", "next", "prev");
+                dots[i].classList.remove("active");
             }
-            
-            if (servicesDots.length > 0) {
-                servicesDots.forEach(dot => dot.classList.remove("active"));
-                servicesDots[servicesCurrentSlide].classList.add("active");
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1; }
+            slides[slideIndex - 1].classList.add("active");
+            if (slideIndex === 1) slides[slides.length - 1].classList.add("prev");
+            else slides[slideIndex - 2].classList.add("prev");
+            if (slideIndex === slides.length) slides[0].classList.add("next");
+            else slides[slideIndex].classList.add("next");
+            dots[slideIndex - 1].classList.add("active");
+            setTimeout(showSlides, 8000);
+        }
+        const dots = document.getElementsByClassName("dot");
+        for (let i = 0; i < dots.length; i++) {
+            dots[i].addEventListener("click", () => {
+                for (let j = 0; j < slides.length; j++) {
+                    slides[j].classList.remove("active", "next", "prev");
+                    dots[j].classList.remove("active");
+                }
+                slideIndex = i + 1;
+                slides[i].classList.add("active");
+                if (i === 0) slides[slides.length - 1].classList.add("prev");
+                else slides[i - 1].classList.add("prev");
+                if (i === slides.length - 1) slides[0].classList.add("next");
+                else slides[i + 1].classList.add("next");
+                dots[i].classList.add("active");
+            });
+        }
+        document.querySelector(".prev").addEventListener("click", () => {
+            slideIndex--;
+            if (slideIndex < 1) slideIndex = slides.length;
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove("active", "next", "prev");
+                dots[i].classList.remove("active");
             }
+            slides[slideIndex - 1].classList.add("active");
+            if (slideIndex === 1) slides[slides.length - 1].classList.add("prev");
+            else slides[slideIndex - 2].classList.add("prev");
+            if (slideIndex === slides.length) slides[0].classList.add("next");
+            else slides[slideIndex].classList.add("next");
+            dots[slideIndex - 1].classList.add("active");
+        });
+        document.querySelector(".next").addEventListener("click", () => {
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove("active", "next", "prev");
+                dots[i].classList.remove("active");
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) slideIndex = 1;
+            slides[slideIndex - 1].classList.add("active");
+            if (slideIndex === 1) slides[slides.length - 1].classList.add("prev");
+            else slides[slideIndex - 2].classList.add("prev");
+            if (slideIndex === slides.length) slides[0].classList.add("next");
+            else slides[slideIndex].classList.add("next");
+            dots[slideIndex - 1].classList.add("active");
+        });
+        showSlides();
+
+        const servicesCarousel = document.querySelector('.services-carousel');
+        const serviceSlides = document.querySelectorAll('.service-slide');
+        const servicePrevBtn = document.querySelector('.service-prev');
+        const serviceNextBtn = document.querySelector('.service-next');
+        const serviceDotsContainer = document.querySelector('.service-dots');
+
+        let currentServiceIndex = 0;
+        const totalServiceSlides = serviceSlides.length;
+
+        for (let i = 0; i < totalServiceSlides; i++) {
+            const dot = document.createElement('span');
+            dot.classList.add('dot');
+            dot.addEventListener('click', () => goToServiceSlide(i));
+            serviceDotsContainer.appendChild(dot);
         }
 
-        if (servicesNext) {
-            servicesNext.addEventListener("click", () => {
-                servicesCurrentSlide = (servicesCurrentSlide + 1) % servicesSlides.length;
-                updateServicesCarousel();
+        const serviceDots = document.querySelectorAll('.service-dots .dot');
+
+        function updateServiceCarousel() {
+            servicesCarousel.style.transform = `translateX(-${currentServiceIndex * 100}%)`;
+            serviceDots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentServiceIndex);
             });
         }
 
-        if (servicesPrev) {
-            servicesPrev.addEventListener("click", () => {
-                servicesCurrentSlide = (servicesCurrentSlide - 1 + servicesSlides.length) % servicesSlides.length;
-                updateServicesCarousel();
-            });
+        function goToServiceSlide(index) {
+            currentServiceIndex = index;
+            updateServiceCarousel();
         }
 
-        if (servicesDots.length > 0) {
-            servicesDots.forEach((dot, index) => {
-                dot.addEventListener("click", () => {
-                    servicesCurrentSlide = index;
-                    updateServicesCarousel();
-                });
-            });
+        serviceNextBtn.addEventListener('click', () => {
+            currentServiceIndex = (currentServiceIndex + 1) % totalServiceSlides;
+            updateServiceCarousel();
+        });
+
+        servicePrevBtn.addEventListener('click', () => {
+            currentServiceIndex = (currentServiceIndex - 1 + totalServiceSlides) % totalServiceSlides;
+            updateServiceCarousel();
+        });
+
+        updateServiceCarousel();
+
+        const testimonialsCarousel = document.querySelector('.testimonials-carousel');
+        const testimonialSlides = document.querySelectorAll('.testimonial-slide');
+        const testimonialPrevBtn = document.querySelector('.testimonial-prev');
+        const testimonialNextBtn = document.querySelector('.testimonial-next');
+        const testimonialDotsContainer = document.querySelector('.testimonial-dots');
+
+        let currentTestimonialIndex = 0;
+        const totalTestimonialSlides = testimonialSlides.length;
+
+        for (let i = 0; i < totalTestimonialSlides; i++) {
+            const dot = document.createElement('span');
+            dot.classList.add('dot');
+            dot.addEventListener('click', () => goToTestimonialSlide(i));
+            testimonialDotsContainer.appendChild(dot);
         }
 
-        // Testimonials Carousel
-        const testimonialsCarousel = document.querySelector(".testimonials-carousel");
-        const testimonialSlides = document.querySelectorAll(".testimonials-carousel .testimonial-slide");
-        const testimonialPrev = document.querySelector(".testimonials .testimonial-prev");
-        const testimonialNext = document.querySelector(".testimonials .testimonial-next");
-        let testimonialCurrentSlide = 0;
-        const testimonialDots = document.querySelectorAll(".testimonials .testimonial-dots .dot");
-        
-        function updateTestimonialsCarousel() {
+        const testimonialDots = document.querySelectorAll('.testimonial-dots .dot');
+
+        function updateTestimonialCarousel() {
             if (testimonialsCarousel) {
-                const offset = -testimonialCurrentSlide * 100;
-                testimonialsCarousel.style.transform = `translateX(${offset}%)`;
-            }
-
-            if (testimonialDots.length > 0) {
-                testimonialDots.forEach(dot => dot.classList.remove("active"));
-                testimonialDots[testimonialCurrentSlide].classList.add("active");
-            }
-
-            if (testimonialPrev) testimonialPrev.style.display = testimonialCurrentSlide === 0 ? "none" : "flex";
-            if (testimonialNext) testimonialNext.style.display = testimonialCurrentSlide === testimonialSlides.length - 1 ? "none" : "flex";
-        }
-
-        if (testimonialNext) {
-            testimonialNext.addEventListener("click", () => {
-                if (testimonialCurrentSlide < testimonialSlides.length - 1) {
-                    testimonialCurrentSlide++;
-                    updateTestimonialsCarousel();
-                }
-            });
-        }
-
-        if (testimonialPrev) {
-            testimonialPrev.addEventListener("click", () => {
-                if (testimonialCurrentSlide > 0) {
-                    testimonialCurrentSlide--;
-                    updateTestimonialsCarousel();
-                }
-            });
-        }
-
-        if (testimonialDots.length > 0) {
-            testimonialDots.forEach((dot, index) => {
-                dot.addEventListener("click", () => {
-                    testimonialCurrentSlide = index;
-                    updateTestimonialsCarousel();
+                testimonialsCarousel.style.transform = `translateX(-${currentTestimonialIndex * 100}%)`;
+                testimonialDots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentTestimonialIndex);
                 });
-            });
+            }
         }
 
-        updateTestimonialsCarousel();
+        function goToTestimonialSlide(index) {
+            currentTestimonialIndex = index;
+            updateTestimonialCarousel();
+        }
+
+        testimonialNextBtn.addEventListener('click', () => {
+            currentTestimonialIndex = (currentTestimonialIndex + 1) % totalTestimonialSlides;
+            updateTestimonialCarousel();
+        });
+
+        testimonialPrevBtn.addEventListener('click', () => {
+            currentTestimonialIndex = (currentTestimonialIndex - 1 + totalTestimonialSlides) % totalTestimonialSlides;
+            updateTestimonialCarousel();
+        });
+
+        updateTestimonialCarousel();
     </script>
 </body>
 </html>
