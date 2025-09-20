@@ -123,10 +123,13 @@
         .services .dot { height: 10px; width: 10px; background: #000000; border-radius: 50%; display: inline-block; margin: 0 5px; cursor: pointer; transition: background-color 0.3s ease; }
         .services .dot.active { background: #00FF19; }
         
+        /* SEÇÃO DE DEPOIMENTOS - CORRIGIDA */
         .testimonials { 
             background: #404040; 
-            padding: 20px 20px; 
+            padding: 60px 20px; 
             text-align: center; 
+            position: relative;
+            z-index: 10;
         }
         .testimonials h2 { 
             font-family: 'Montserrat', sans-serif; 
@@ -183,12 +186,53 @@
         .review-header p { margin: 0; color: #333; font-size: 14px; }
         .review-text { font-size: 14px; color: #555; margin: 0; }
 
-        .testimonials .controls { position: absolute; top: 50%; width: 100%; transform: translateY(-50%); display: flex; justify-content: space-between; z-index: 2; }
-        .testimonials .arrow { 
-            color: #000000; 
-            font-size: 31px; 
+        /* SETAS DOS DEPOIMENTOS - CORRIGIDAS */
+        .testimonials .testimonial-prev {
+            position: absolute;
+            left: 190px;  /* Mudado de -10px para 20px - mais próximo dos cards */
+            top: 50%;
+            transform: translateY(-50%);
+            color: #000000;
+            font-size: 31px;
             cursor: pointer;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.9);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
+        
+        .testimonials .testimonial-next {
+            position: absolute;
+            right: 190px;  /* Mudado de -10px para 20px - mais próximo dos cards */
+            top: 50%;
+            transform: translateY(-50%);
+            color: #000000;
+            font-size: 31px;
+            cursor: pointer;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.9);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .testimonials .testimonial-prev:hover,
+        .testimonials .testimonial-next:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translateY(-50%) scale(1.1);
+        }
+
         .testimonials .dots { text-align: center; margin-top: 20px; }
         .testimonials .dot { height: 10px; width: 10px; background: #FFFFFF; border-radius: 50%; display: inline-block; margin: 0 5px; cursor: pointer; }
         .testimonials .dot.active { background: #00FF19; }
@@ -263,7 +307,8 @@
             .services .controls { display: none; }
             .testimonial-slide { flex-direction: column; align-items: center; }
             .review-card { width: 90%; max-width: 400px; }
-            .testimonials .controls { display: none; }
+            .testimonials .testimonial-prev,
+            .testimonials .testimonial-next { display: none; }
         }
 
         @media (max-width: 480px) {
@@ -505,7 +550,7 @@
                         <p class="review-text">Ótimo profissional, serviço rápido e muito bom voltaria a comprar</p>
                     </div>
                     <div class="review-card">
-                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%2Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
+                        <img src="https://github.com/Betioli/Vidracaria-Kibox/blob/main/Images%20-%20Copia/icons8-google-logo-48.png?raw=true" alt="Google" class="google-review-logo">
                         <div class="review-header">
                             <div class="avatar" style="background-color: #27AE60;">T</div>
                             <p><strong>Trator_Agro_Vida</strong></p>
@@ -532,11 +577,12 @@
                     </div>
                 </div>
             </div>
-            <div class="controls">
-                <span class="arrow prev testimonial-prev">&#10094;</span>
-                <span class="arrow next testimonial-next">&#10095;</span>
-            </div>
         </div>
+        
+        <!-- Setas dos depoimentos posicionadas corretamente -->
+        <span class="testimonial-prev">&#10094;</span>
+        <span class="testimonial-next">&#10095;</span>
+        
         <div class="dots testimonial-dots">
         </div>
         <p class="total-reviews">Avaliações totais 4.9 de 5, com base em 60 avaliações</p>
@@ -558,10 +604,12 @@
     </div>
     <div class="footer-bottom">
         <p class="footer-item">2025© Vidraçaria KIBOX | Todos os direitos reservados</p>
-        <p class="footer-item"><a href="http://localhost/bms/wordpress/politica-de-privacidade/">Políticas de Privacidade</a></p>
+        <p class="footer-item"><a href="#privacy">Políticas de Privacidade</a></p>
         <p class="footer-item footer-dev"><a href="https://www.instagram.com/bms_trafego/">Desenvolvido por @bms_trafego</a></p>
     </div>
+    
     <script>
+        // HERO CAROUSEL - Mantido original
         let slideIndex = 0;
         const slides = document.getElementsByClassName("slide");
         function showSlides() {
@@ -625,6 +673,7 @@
         });
         showSlides();
 
+        // SERVICES CAROUSEL - Mantido original
         const servicesCarousel = document.querySelector('.services-carousel');
         const serviceSlides = document.querySelectorAll('.service-slide');
         const servicePrevBtn = document.querySelector('.service-prev');
@@ -667,6 +716,7 @@
 
         updateServiceCarousel();
 
+        // TESTIMONIALS CAROUSEL - COM NAVEGAÇÃO INTELIGENTE
         const testimonialsCarousel = document.querySelector('.testimonials-carousel');
         const testimonialSlides = document.querySelectorAll('.testimonial-slide');
         const testimonialPrevBtn = document.querySelector('.testimonial-prev');
@@ -676,6 +726,7 @@
         let currentTestimonialIndex = 0;
         const totalTestimonialSlides = testimonialSlides.length;
 
+        // Criar dots dos depoimentos
         for (let i = 0; i < totalTestimonialSlides; i++) {
             const dot = document.createElement('span');
             dot.classList.add('dot');
@@ -685,31 +736,61 @@
 
         const testimonialDots = document.querySelectorAll('.testimonial-dots .dot');
 
-        function updateTestimonialCarousel() {
+        // NAVEGAÇÃO INTELIGENTE - mostra/esconde setas baseado na posição
+        function updateTestimonialNavigation() {
+            // Atualizar carrossel
             if (testimonialsCarousel) {
                 testimonialsCarousel.style.transform = `translateX(-${currentTestimonialIndex * 100}%)`;
-                testimonialDots.forEach((dot, index) => {
-                    dot.classList.toggle('active', index === currentTestimonialIndex);
-                });
+            }
+
+            // Atualizar dots
+            testimonialDots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentTestimonialIndex);
+            });
+
+            // NAVEGAÇÃO INTELIGENTE das setas
+            if (testimonialPrevBtn && testimonialNextBtn) {
+                if (currentTestimonialIndex === 0) {
+                    // Primeiro slide - só seta DIREITA
+                    testimonialPrevBtn.style.display = 'none';
+                    testimonialNextBtn.style.display = 'flex';
+                } else if (currentTestimonialIndex === totalTestimonialSlides - 1) {
+                    // Último slide - só seta ESQUERDA
+                    testimonialPrevBtn.style.display = 'flex';
+                    testimonialNextBtn.style.display = 'none';
+                } else {
+                    // Slides do meio - AMBAS as setas
+                    testimonialPrevBtn.style.display = 'flex';
+                    testimonialNextBtn.style.display = 'flex';
+                }
             }
         }
 
         function goToTestimonialSlide(index) {
             currentTestimonialIndex = index;
-            updateTestimonialCarousel();
+            updateTestimonialNavigation();
         }
 
-        testimonialNextBtn.addEventListener('click', () => {
-            currentTestimonialIndex = (currentTestimonialIndex + 1) % totalTestimonialSlides;
-            updateTestimonialCarousel();
-        });
+        if (testimonialNextBtn) {
+            testimonialNextBtn.addEventListener('click', () => {
+                if (currentTestimonialIndex < totalTestimonialSlides - 1) {
+                    currentTestimonialIndex++;
+                    updateTestimonialNavigation();
+                }
+            });
+        }
 
-        testimonialPrevBtn.addEventListener('click', () => {
-            currentTestimonialIndex = (currentTestimonialIndex - 1 + totalTestimonialSlides) % totalTestimonialSlides;
-            updateTestimonialCarousel();
-        });
+        if (testimonialPrevBtn) {
+            testimonialPrevBtn.addEventListener('click', () => {
+                if (currentTestimonialIndex > 0) {
+                    currentTestimonialIndex--;
+                    updateTestimonialNavigation();
+                }
+            });
+        }
 
-        updateTestimonialCarousel();
+        // Inicializar navegação dos depoimentos
+        updateTestimonialNavigation();
     </script>
 </body>
 </html>
