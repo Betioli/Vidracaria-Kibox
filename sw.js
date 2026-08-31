@@ -1,5 +1,5 @@
 // sw.js - SERVICE WORKER OTIMIZADO KIBOX VIDRAÇARIA
-const CACHE_NAME = 'kibox-v2.7';
+const CACHE_NAME = 'kibox-v2.8';
 console.log('🔄 Service Worker kibox-v2.7 carregado com sucesso!');
 
 const urlsToCache = [
@@ -20,7 +20,7 @@ const urlsToCache = [
   '/fonts/Montserrat-Bold.woff2',
   '/fonts/Montserrat-Medium.woff2',
   '/fonts/Montserrat-Regular.woff2',
-  '/fonts/Montserrat-Semibold.woff2',
+  '/fonts/Montserrat-SemiBold.woff2',
   '/fonts/RedHatDisplay-Bold.woff2',
   '/fonts/RedHatDisplay-Medium.woff2',
   '/fonts/RedHatDisplay-Regular.woff2',
